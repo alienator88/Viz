@@ -20,8 +20,8 @@
 		C73944B92BC4499700EE7EBF /* AboutCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944B82BC4499700EE7EBF /* AboutCommand.swift */; };
 		C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BB2BC449C800EE7EBF /* AboutView.swift */; };
 		C73944BE2BC449C800EE7EBF /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BC2BC449C800EE7EBF /* AboutWindow.swift */; };
-		C73944C32BC4756800EE7EBF /* Magnet in Frameworks */ = {isa = PBXBuildFile; productRef = C73944C22BC4756800EE7EBF /* Magnet */; };
 		C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76920102BC5EB5E00D23CEC /* MainView.swift */; };
+		C7E780DE2BC700060053B311 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = C7E780DD2BC700060053B311 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C73944C32BC4756800EE7EBF /* Magnet in Frameworks */,
+				C7E780DE2BC700060053B311 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +128,7 @@
 			);
 			name = Viz;
 			packageProductDependencies = (
-				C73944C22BC4756800EE7EBF /* Magnet */,
+				C7E780DD2BC700060053B311 /* KeyboardShortcuts */,
 			);
 			productName = Grabber;
 			productReference = C7174C902BC06EE500DBEF75 /* Viz.app */;
@@ -159,7 +159,7 @@
 			);
 			mainGroup = C7174C872BC06EE500DBEF75;
 			packageReferences = (
-				C73944C12BC4756800EE7EBF /* XCRemoteSwiftPackageReference "Magnet" */,
+				C7E780DC2BC700060053B311 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			productRefGroup = C7174C912BC06EE500DBEF75 /* Products */;
 			projectDirPath = "";
@@ -331,7 +331,7 @@
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BK8443AXLU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -347,7 +347,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -363,7 +363,7 @@
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BK8443AXLU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -379,7 +379,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -411,21 +411,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C73944C12BC4756800EE7EBF /* XCRemoteSwiftPackageReference "Magnet" */ = {
+		C7E780DC2BC700060053B311 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Clipy/Magnet";
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C73944C22BC4756800EE7EBF /* Magnet */ = {
+		C7E780DD2BC700060053B311 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C73944C12BC4756800EE7EBF /* XCRemoteSwiftPackageReference "Magnet" */;
-			productName = Magnet;
+			package = C7E780DC2BC700060053B311 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

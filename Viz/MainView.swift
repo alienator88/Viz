@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import KeyboardShortcuts
 
 struct ContentView: View {
     @StateObject var appState = AppState()
@@ -53,11 +54,11 @@ struct ContentView: View {
                             .keyboardShortcut("1", modifiers: [.command, .shift])
                             .buttonStyle(RoundedRectangleButtonStyle(image: "text.viewfinder", size: 30))
 
-                            Text("⌘ ⇧ 1").font(.footnote).opacity(0.5)
+                            KeyboardShortcuts.Recorder(for: .captureText)
                         }
 
 
-                        VStack {
+                        VStack(alignment: .center) {
                             Button("QR/Barcode") {
                                 CaptureService.shared.captureBarcodes()
                                 dismiss()
@@ -66,7 +67,7 @@ struct ContentView: View {
                             .keyboardShortcut("2", modifiers: [.command, .shift])
                             .buttonStyle(RoundedRectangleButtonStyle(image: "qrcode.viewfinder", size: 30))
 
-                            Text("⌘ ⇧ 2").font(.footnote).opacity(0.5)
+                            KeyboardShortcuts.Recorder(for: .captureBarcode)
                         }
 
                     }
@@ -142,6 +143,6 @@ struct ContentView: View {
                 }
                 .padding()
             }
-            .frame(width: 330, height: 550)
+            .frame(width: 330, height: 560)
     }
 }

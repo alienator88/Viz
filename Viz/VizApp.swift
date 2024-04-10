@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-import Magnet
-
+import KeyboardShortcuts
 
 @main
 struct VizApp: App {
@@ -31,20 +30,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
 
-        if let keyCombo = KeyCombo(key: .one, cocoaModifiers: [.command, .shift]) {
-            let hotKey = HotKey(identifier: "CommandShift1", keyCombo: keyCombo) { hotKey in
-                CaptureService.shared.captureText()
-            }
-            hotKey.register()
+        KeyboardShortcuts.onKeyUp(for: .captureText) {
+            CaptureService.shared.captureText()
         }
 
-        if let keyCombo = KeyCombo(key: .two, cocoaModifiers: [.command, .shift]) {
-            let hotKey = HotKey(identifier: "CommandShift2", keyCombo: keyCombo) { hotKey in
-                CaptureService.shared.captureBarcodes()
-            }
-            hotKey.register()
+        KeyboardShortcuts.onKeyUp(for: .captureBarcode) {
+            CaptureService.shared.captureBarcodes()
         }
-
 
 #if !DEBUG
         ensureApplicationSupportFolderExists()
@@ -52,4 +44,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     }
 
+}
+
+
+extension KeyboardShortcuts.Name {
+    static let captureText = Self("captureText", default: .init(.one, modifiers: [.command, .shift]))
+}
+
+extension KeyboardShortcuts.Name {
+    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .option]))
 }
