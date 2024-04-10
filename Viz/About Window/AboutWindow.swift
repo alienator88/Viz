@@ -19,8 +19,8 @@ class AboutWindow: NSWindowController {
         let visualEffect = NSVisualEffectView()
         visualEffect.blendingMode = .behindWindow
         visualEffect.state = .active
-        visualEffect.material = .underWindowBackground
-        
+        visualEffect.material = .sidebar
+
         let contentView = makeAboutView()
         
         let hostView = NSHostingView(rootView: contentView)
@@ -37,7 +37,7 @@ class AboutWindow: NSWindowController {
     }
     
     private static func makeWindow() -> NSWindow {
-        let contentRect = NSRect(x: 0, y: 0, width: 500, height: 260)
+        let contentRect = NSRect(x: 0, y: 0, width: 400, height: 400)
         let styleMask: NSWindow.StyleMask = [
             .titled,
             .closable,

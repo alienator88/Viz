@@ -53,6 +53,8 @@ struct TextRecognition {
                 textItem.text += recognizedText.string
                 if keepLineBreaks {
                     textItem.text += "\n"
+                } else {
+                    textItem.text += " "
                 }
             }
 
@@ -105,6 +107,8 @@ struct TextRecognition {
                 textItem.text += barcodeValue
                 if keepLineBreaks {
                     textItem.text += "\n"
+                } else {
+                    textItem.text += " "
                 }
             }
 

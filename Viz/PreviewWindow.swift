@@ -14,7 +14,7 @@ var previewWindow: NSWindow?
 struct PreviewContentView: View {
     let content: RecognizedContent
     var body: some View {
-        VisualEffectView(material: .sidebar, blendingMode: .behindWindow)
+        VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
             .overlay(
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {

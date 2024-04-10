@@ -212,6 +212,63 @@ struct SimpleButtonBrightStyle: ButtonStyle {
 }
 
 
+struct RoundedRectangleButtonStyle: ButtonStyle {
+    @State private var isHovered = false
+    let image: String
+    let size: CGFloat
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            Spacer()
+            VStack(alignment: .center, spacing: 10) {
+                Image(systemName: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: size)
+                    .foregroundColor(Color("mode"))
+                configuration.label
+            }
+            Spacer()
+        }
+        .padding()
+        .background(isHovered ? Color("mode").opacity(0.3) : Color("mode").opacity(0.1))
+        .foregroundColor(Color("mode"))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(Color("mode").opacity(0.2), lineWidth: 1)
+        )
+        .animation(.easeInOut(duration: 0.3), value: isHovered)
+        .cornerRadius(10)
+        .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+        .onHover { inside in
+            isHovered = inside
+        }
+    }
+
+}
+
+
+struct SpacedToggle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer() // Adds space between the label and the switch
+            Switch(isOn: configuration.$isOn)
+                .labelsHidden() // Hide default labels of the switch to use the custom label
+        }
+    }
+}
+
+struct Switch: View {
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle("", isOn: $isOn)
+            .toggleStyle(.switch)
+    }
+}
+
+
 extension Bundle {
 
     var name: String {
