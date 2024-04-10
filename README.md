@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.1
+   <strong>Version: </strong>1.2
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -22,7 +22,7 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 - Small app size (~3MB)
 - Very quick extraction process
 - Copies to clipboard automatically, ready to paste
-- Hotkeys CMD+Shift+1 and CMD+Shift+2 for starting a text or qr/barcode scan
+- Hotkeys CMD+Shift+1 and CMD+Shift+2 for starting a text or qr/barcode scan. These can be cleared out and custom hotkeys can be set by user
 - Shows copied text in a floating window, which can be set to auto-hide as well
 - Enable or disable line breaks in the extracted text
 - Append multiple text snippets to the clipboard by enabling Append option in Settings, otherwise it only holds one snippet at a time
@@ -32,7 +32,8 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 
 
 ## Preview
-![main](https://github.com/alienator88/Viz/assets/6263626/dbab1169-7a5a-4dfd-8872-8085c10aa392)
+![main](https://github.com/alienator88/Viz/assets/6263626/b112c76c-4bed-4b75-b53e-ed1095ef8fb9)
+
 
 
 ### Text Extraction Demo
