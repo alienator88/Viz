@@ -32,7 +32,7 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 
 
 ## Preview
-![mainUI](https://github.com/alienator88/Viz/assets/6263626/457fa757-8533-43c6-802d-2a8e44497851)
+![main](https://github.com/alienator88/Viz/assets/6263626/dbab1169-7a5a-4dfd-8872-8085c10aa392)
 
 
 ### Text Extraction Demo
