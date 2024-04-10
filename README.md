@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.0
+   <strong>Version: </strong>1.1
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -31,13 +31,17 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 
 
 
-## Demo
+## Preview
+![mainUI](https://github.com/alienator88/Viz/assets/6263626/457fa757-8533-43c6-802d-2a8e44497851)
 
-### Text Extraction
-https://github.com/alienator88/Viz/assets/6263626/1b3bae40-f87e-4474-bb17-4c5ba5ae2d4b
 
-### QR/Barcode Extraction
-https://github.com/alienator88/Viz/assets/6263626/11a9445a-8d14-411d-957d-2e8896c381d7
+### Text Extraction Demo
+https://github.com/alienator88/Viz/assets/6263626/2b809553-0eb1-4a6e-bbb5-8404680067d8
+
+
+### QR/Barcode Extraction Demo
+https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32fc7e470
+
 
 
 
