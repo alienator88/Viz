@@ -21,6 +21,7 @@
 		C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BB2BC449C800EE7EBF /* AboutView.swift */; };
 		C73944BE2BC449C800EE7EBF /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BC2BC449C800EE7EBF /* AboutWindow.swift */; };
 		C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76920102BC5EB5E00D23CEC /* MainView.swift */; };
+		C783473E2C0E1B1400F4EE76 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783473D2C0E1B1400F4EE76 /* Styles.swift */; };
 		C7E780DE2BC700060053B311 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = C7E780DD2BC700060053B311 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		C73944BB2BC449C800EE7EBF /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		C73944BC2BC449C800EE7EBF /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
 		C76920102BC5EB5E00D23CEC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		C783473D2C0E1B1400F4EE76 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		C7FD442B2BC5CADF00777BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +87,7 @@
 				C7174CAA2BC0A52100DBEF75 /* PreviewWindow.swift */,
 				C7174CAE2BC0C14900DBEF75 /* printscreen.mp3 */,
 				C7174CB02BC0C6A800DBEF75 /* Utilities.swift */,
+				C783473D2C0E1B1400F4EE76 /* Styles.swift */,
 				C73944B62BC4489C00EE7EBF /* AppState.swift */,
 				C76920102BC5EB5E00D23CEC /* MainView.swift */,
 			);
@@ -142,7 +145,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					C7174C8F2BC06EE500DBEF75 = {
 						CreatedOnToolsVersion = 15.3;
@@ -189,6 +192,7 @@
 			files = (
 				C7174CA32BC06F1200DBEF75 /* OCR.swift in Sources */,
 				C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */,
+				C783473E2C0E1B1400F4EE76 /* Styles.swift in Sources */,
 				C73944B92BC4499700EE7EBF /* AboutCommand.swift in Sources */,
 				C7174CAB2BC0A52100DBEF75 /* PreviewWindow.swift in Sources */,
 				C73944B32BC4487700EE7EBF /* NewWin.swift in Sources */,
@@ -239,6 +243,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -258,7 +263,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -302,6 +307,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -315,7 +321,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -331,7 +337,8 @@
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BK8443AXLU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -347,7 +354,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -363,7 +370,8 @@
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BK8443AXLU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -379,7 +387,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

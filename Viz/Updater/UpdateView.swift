@@ -80,7 +80,7 @@ struct UpdateView: View {
                     }) {
                         Text("Update")
                     }
-                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.down.circle", help: "Update", color: .accentColor))
+                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.down.circle", help: "Update", color: .green))
                 } else {
                     Button(action: {
                         NewWin.close()
@@ -88,7 +88,7 @@ struct UpdateView: View {
                     }) {
                         Text("Restart")
                     }
-                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.uturn.left.circle", help: "Restart", color: .accentColor))
+                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.uturn.left.circle", help: "Restart", color: .blue))
                 }
 
             }
@@ -177,14 +177,14 @@ struct NoUpdateView: View {
                     }) {
                         Text("Force Update")
                     }
-                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.down.circle", help: "Force-Update", color: .red))
+                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.down.circle", help: "Force-Update", color: .green))
 
                     Button(action: {
                         NewWin.close()
                     }) {
                         Text("Okay")
                     }
-                    .buttonStyle(SimpleButtonBrightStyle(icon: "checkmark.circle", help: "Ok", color: .accentColor))
+                    .buttonStyle(SimpleButtonBrightStyle(icon: "checkmark.circle", help: "Ok", color: .white))
 
                 }
 
@@ -196,7 +196,7 @@ struct NoUpdateView: View {
                     }) {
                         Text("Restart")
                     }
-                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.uturn.left.circle", help: "Restart", color: .accentColor))
+                    .buttonStyle(SimpleButtonBrightStyle(icon: "arrow.uturn.left.circle", help: "Restart", color: .blue))
                 }
             }
             .padding(.bottom)

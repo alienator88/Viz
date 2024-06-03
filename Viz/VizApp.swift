@@ -16,6 +16,11 @@ struct VizApp: App {
     var body: some Scene {
         MenuBarExtra("Viz", systemImage: "eye", content: {
             ContentView()
+                .onAppear {
+#if !DEBUG
+                    loadGithubReleases(appState: appState)
+#endif
+                }
         })
         .menuBarExtraStyle(.window)
         .commands {

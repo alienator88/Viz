@@ -59,7 +59,7 @@ struct AboutView: View {
             HStack(spacing: 0){
                 Spacer()
                 Text("Made with ❤️ by ")
-                Text("\(developerName) (dev@itsalin.com)")
+                Text("\(developerName)")
                     .bold()
                 Spacer()
             }

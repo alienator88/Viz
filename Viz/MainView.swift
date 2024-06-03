@@ -14,6 +14,8 @@ struct ContentView: View {
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
     @AppStorage("closePreview") var closePreview: Bool = false
+    @AppStorage("processing") var processing: Bool = false
+    @AppStorage("postcommands") var postCommands: String = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -80,8 +82,47 @@ struct ContentView: View {
                     .help("Clear clipboard contents and stored captures")
                     .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
 
+                    if processing {
+                        GroupBox(label: {
+                            HStack(alignment: .center, spacing: 5) {
+                                Text("Post-Processing")
+                                InfoButton(text: "Execute any shell commands after capture is completed. You may also use the [ocr] token in the commands. Example:\nsay [ocr]; echo [ocr] >> saved.txt")
+                                Spacer()
+                            }
+                        }().font(.title2)) {
+                            HStack(alignment: .center, spacing: 10) {
+                                TextEditor(text: $postCommands)
+                                    .frame(height: 50)
+                                    .focusable(false)
+                                    .font(.title3)
+                                    .overlay {
+                                        if postCommands.isEmpty {
+                                            VStack {
+                                                HStack {
+                                                    Text("Example: say [ocr]; echo [ocr] >> file.txt").opacity(0.5)
+                                                    Spacer()
+                                                }
+                                                .padding(.leading, 8)
+                                                .padding(.top, 2)
+                                                Spacer()
+                                            }
+                                            .frame(height: 50)
+                                        }
+                                    }
 
-                    GroupBox(label: Text("Settings").font(.title2).padding(.vertical, 4)) {
+
+                            }
+                            .padding(6)
+                            .padding(.vertical, 4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+
+
+
+                    GroupBox(label: Text("Settings").font(.title2)) {
                         VStack(alignment: .leading, spacing: 10) {
                             Toggle("Append consecutive captures", isOn: $appendRecognizedText)
                                 .toggleStyle(SpacedToggle())
@@ -92,6 +133,9 @@ struct ContentView: View {
                             Toggle("Auto-hide capture window (3s)", isOn: $closePreview)
                                 .toggleStyle(SpacedToggle())
                                 .help("When enabled, captured content preview will close after 3 seconds")
+                            Toggle("Post-processing", isOn: $processing)
+                                .toggleStyle(SpacedToggle())
+                                .help("When enabled, you can execute shell functions after capture")
                             Toggle("Launch at login", isOn: Binding(
                                 get: { appState.isLaunchAtLoginEnabled },
                                 set: { newValue in
@@ -106,6 +150,7 @@ struct ContentView: View {
 
                         }
                         .padding(6)
+                        .padding(.vertical, 4)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     }
@@ -142,7 +187,9 @@ struct ContentView: View {
 
                 }
                 .padding()
+                .background(Color("bg"))
+
             }
-            .frame(width: 330, height: 560)
+            .frame(width: 330, height: processing ? 710 : 590)
     }
 }

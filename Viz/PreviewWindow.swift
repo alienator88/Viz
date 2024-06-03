@@ -10,9 +10,11 @@ import AppKit
 import SwiftUI
 
 var previewWindow: NSWindow?
+var cmdOutputWindow: NSWindow?
 
 struct PreviewContentView: View {
     let content: RecognizedContent
+
     var body: some View {
         VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
             .overlay(
@@ -21,21 +23,16 @@ struct PreviewContentView: View {
                         Image(systemName: "clipboard")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 10)
-                        Text("Copied!")
+                            .frame(width: 14, height: 14)
+                        Text("Clipboard")
                             .font(.title2)
                         Spacer()
-
-                        Button("Clear") {
-                            clearClipboard()
-                        }
-                        .buttonStyle(SimpleButtonBrightStyle(icon: "eraser", help: "Clear", color: Color("mode")))
 
                         Button("Close") {
                             previewWindow?.orderOut(nil)
                             previewWindow = nil
                         }
-                        .buttonStyle(SimpleButtonBrightStyle(icon: "x.circle.fill", help: "Close", color: Color("mode")))
+                        .buttonStyle(SimpleButtonStyle(icon: "x.circle.fill", help: "Close", color: Color("mode"), size: 14))
                     }
 
                     Divider()
@@ -47,6 +44,7 @@ struct PreviewContentView: View {
                         Text(trimmedText)
                             .padding(4)
                             .listRowBackground(Color.clear)
+                            .textSelection(.enabled)
                     }
                     .scrollContentBackground(.hidden)
                     .background(.clear)
@@ -55,6 +53,7 @@ struct PreviewContentView: View {
                     .padding(.top, 5)
                     .scrollIndicators(.visible)
                     .textSelection(.enabled)
+
                 }
                 .padding()
                 .foregroundColor(Color("mode"))
@@ -99,6 +98,85 @@ func showPreview(content: RecognizedContent) {
     }
 
 }
+
+
+
+struct CmdOutputView: View {
+    @AppStorage("cmdOutput") var cmdOutput: String = ""
+
+    var body: some View {
+        VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
+            .overlay(
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                        Image(systemName: "terminal")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 14, height: 14)
+                        Text("Post-processing")
+                            .font(.title2)
+                        Spacer()
+
+                        Button("Close") {
+                            cmdOutputWindow?.orderOut(nil)
+                            cmdOutputWindow = nil
+                        }
+                        .buttonStyle(SimpleButtonStyle(icon: "x.circle.fill", help: "Close", color: Color("mode"), size: 14))
+                    }
+
+                    Divider()
+
+                    ScrollView {
+                        Text(cmdOutput.isEmpty ? "No output to display" : cmdOutput)
+                            .padding(4)
+                            .textSelection(.enabled)
+                    }
+
+                }
+                    .padding()
+                    .foregroundColor(Color("mode"))
+            )
+
+
+    }
+}
+
+func showOutput() {
+    @AppStorage("closePreview") var closePreview: Bool = false
+
+    let hostingView = NSHostingView(rootView: CmdOutputView())
+    hostingView.frame = CGRect(x: 0, y: 0, width: 300, height: 200)
+
+    cmdOutputWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 300, height: 200),
+                             styleMask: .borderless,
+                             backing: .buffered,
+                             defer: false)
+    cmdOutputWindow?.contentView = hostingView
+    cmdOutputWindow?.contentView?.wantsLayer = true
+    cmdOutputWindow?.contentView?.layer?.cornerRadius = 10
+    cmdOutputWindow?.contentView?.layer?.masksToBounds = true
+    cmdOutputWindow?.level = .floating
+    cmdOutputWindow?.isOpaque = false
+    cmdOutputWindow?.backgroundColor = .clear
+
+    //    notificationWindow?.center()
+    if let screen = NSScreen.main {
+        let screenRect = screen.visibleFrame
+        let windowX = screenRect.maxX - 300 - 30
+        let windowY = screenRect.maxY - 410 - 30
+        cmdOutputWindow?.setFrameOrigin(NSPoint(x: windowX, y: windowY))
+    }
+
+    cmdOutputWindow?.orderFront(nil)
+    if closePreview {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            cmdOutputWindow?.orderOut(nil)
+            cmdOutputWindow = nil
+        }
+    }
+
+}
+
 
 
 

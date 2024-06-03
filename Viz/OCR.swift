@@ -14,6 +14,9 @@ struct TextRecognition {
 //    @ObservedObject var recognizedContent: RecognizedContent
     var recognizedContent: RecognizedContent
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
+    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("cmdOutput") var cmdOutput: String = ""
+    @AppStorage("processing") var processing: Bool = false
 
     var image: NSImage
     var didFinishRecognition: () -> Void
@@ -27,12 +30,18 @@ struct TextRecognition {
             do {
                 try requestHandler.perform([self.getTextRecognitionRequest(with: textItem)])
 
-                playSound(named: "printscreen")
-
                 DispatchQueue.main.async {
                     self.updateRecognizedContent(with: textItem)
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
+                    if processing {
+                        cmdOutput = "Loading.."
+                        Task(priority: .high) {
+                            let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
+                            let command = replaceContentToken(in: postCommands, with: combinedText)
+                            cmdOutput = executeShellCommand(command)
+                        }
+                    }
                 }
             } catch {
                 print("Failed to recognize text: \(error.localizedDescription)")
@@ -83,12 +92,18 @@ struct TextRecognition {
             do {
                 try requestHandler.perform([self.getBarcodeRecognitionRequest(with: barcodeItem)])
 
-                playSound(named: "printscreen")
-
                 DispatchQueue.main.async {
                     self.updateRecognizedContent(with: barcodeItem)
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
+                    if processing {
+                        cmdOutput = "Loading.."
+                        Task(priority: .high) {
+                            let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
+                            let command = replaceContentToken(in: postCommands, with: combinedText)
+                            cmdOutput = executeShellCommand(command)
+                        }
+                    }
                 }
             } catch {
                 print("Failed to recognize barcodes: \(error.localizedDescription)")
@@ -145,14 +160,25 @@ class CaptureService {
     var screenCaptureUtility = ScreenCaptureUtility()
     var recognizedContent = RecognizedContent()
     let pasteboard = NSPasteboard.general
+    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("cmdOutput") var cmdOutput: String = ""
+    @AppStorage("processing") var processing: Bool = false
 
     func captureText() {
+        cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
+                playSound(named: "printscreen")
+
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
                     showPreview(content: self.recognizedContent)
+                    if self.processing {
+                        cmdOutputWindow?.orderOut(nil)
+                        cmdOutputWindow = nil
+                        showOutput()
+                    }
                 }.recognizeText()
             } else {
                 print("Failed to capture image")
@@ -161,12 +187,20 @@ class CaptureService {
     }
 
     func captureBarcodes() {
+        cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
+                playSound(named: "printscreen")
+
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
                     showPreview(content: self.recognizedContent)
+                    if self.processing {
+                        cmdOutputWindow?.orderOut(nil)
+                        cmdOutputWindow = nil
+                        showOutput()
+                    }
                 }.recognizeBarcodes()
             } else {
                 print("Failed to capture image")
