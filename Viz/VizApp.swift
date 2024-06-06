@@ -16,6 +16,7 @@ struct VizApp: App {
     var body: some Scene {
         MenuBarExtra("Viz", systemImage: "eye", content: {
             ContentView()
+                .environment(\.colorScheme, .dark)
                 .onAppear {
 #if !DEBUG
                     loadGithubReleases(appState: appState)
