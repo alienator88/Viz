@@ -65,7 +65,7 @@ https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32f
 > Since I don't have a paid developer account, I can't submit to the main Homebrew cask repo.
 You can still add the app via Homebrew by tapping my homebrew repo:
 ```
-brew install alienator88/homebrew-cask/viz
+brew install alienator88/homebrew-cask/viz --no-quarantine
 ```
 </details>
 
