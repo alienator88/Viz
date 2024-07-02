@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.4
+   <strong>Version: </strong>1.5
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -48,7 +48,7 @@ https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32f
 
 ## Requirements
 - MacOS 13.0+ (App uses some newer SwiftUI functions/modifiers which don't work on anything lower than 13.0)
-- Open Viz first time by right clicking and selecting Open. This adds an exception to Gatekeeper so it doesn't complain about the app not being signed with an Apple Developer certificate
+- Viz is now signed/notarized ~~Open Viz first time by right clicking and selecting Open. This adds an exception to Gatekeeper so it doesn't complain about the app not being signed with an Apple Developer certificate~~
 
 
 ## Getting Viz
@@ -65,7 +65,7 @@ https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32f
 > Since I don't have a paid developer account, I can't submit to the main Homebrew cask repo.
 You can still add the app via Homebrew by tapping my homebrew repo:
 ```
-brew install alienator88/homebrew-cask/viz
+brew install alienator88/homebrew-cask/viz --no-quarantine
 ```
 </details>
 
