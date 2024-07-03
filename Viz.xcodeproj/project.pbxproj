@@ -22,6 +22,7 @@
 		C73944BE2BC449C800EE7EBF /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BC2BC449C800EE7EBF /* AboutWindow.swift */; };
 		C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76920102BC5EB5E00D23CEC /* MainView.swift */; };
 		C783473E2C0E1B1400F4EE76 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783473D2C0E1B1400F4EE76 /* Styles.swift */; };
+		C79947982C34CFB3007279CC /* Builds in Resources */ = {isa = PBXBuildFile; fileRef = C79947972C34CFB3007279CC /* Builds */; };
 		C7E780DE2BC700060053B311 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = C7E780DD2BC700060053B311 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		C73944BC2BC449C800EE7EBF /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
 		C76920102BC5EB5E00D23CEC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C783473D2C0E1B1400F4EE76 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		C79947972C34CFB3007279CC /* Builds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Builds; sourceTree = "<group>"; };
 		C7FD442B2BC5CADF00777BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +79,7 @@
 		C7174C922BC06EE500DBEF75 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
+				C79947972C34CFB3007279CC /* Builds */,
 				C7FD442B2BC5CADF00777BEF /* Info.plist */,
 				C73944BA2BC449BA00EE7EBF /* About Window */,
 				C73944AF2BC447B600EE7EBF /* Updater */,
@@ -178,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C79947982C34CFB3007279CC /* Builds in Resources */,
 				C7174CAF2BC0C14900DBEF75 /* printscreen.mp3 in Resources */,
 				C7174C982BC06EE600DBEF75 /* Assets.xcassets in Resources */,
 			);
