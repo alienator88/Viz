@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.5
+   <strong>Version: </strong>1.6
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
