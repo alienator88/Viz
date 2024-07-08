@@ -16,7 +16,7 @@ struct VizApp: App {
     var body: some Scene {
         MenuBarExtra("Viz", systemImage: "eye", content: {
             ContentView()
-//                .environment(\.colorScheme, .dark)
+                .environment(\.colorScheme, .dark)
                 .preferredColorScheme(.dark)
                 .onAppear {
 #if !DEBUG
