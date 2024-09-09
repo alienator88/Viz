@@ -14,13 +14,6 @@
 </p>
 </br>
 
-> [!NOTE]
-> Viz is now signed/notarized with an Apple Developer account.
->
-> ### <ins>Updating Viz to the signed/notarized version</ins>
-> Any app on version `v1.4 and below` that used the old unsigned certificate had its authorization revoked when I switched to signing/notarizing the app with a valid apple certificate. With this in mind, the auto-updater built-in to the app and homebrew updating will likely not work. This will require you to manually remove the old app and download the latest version from GitHub to get to the signed version successfully.
-
-
 Extract text from images, videos, QR codes, barcodes with a simple snip mechanism.
 
 
