@@ -56,16 +56,15 @@ https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32f
 <details>
   <summary>Releases</summary>
 
-> Pre-compiled, always up-to-date versions are available from my releases page.
+Pre-compiled, always up-to-date versions are available from my [releases](https://github.com/alienator88/Viz/releases) page.
 </details>
 
 <details>
   <summary>Homebrew</summary>
-   
-> Since I don't have a paid developer account, I can't submit to the main Homebrew cask repo.
-You can still add the app via Homebrew by tapping my homebrew repo:
+
+You can add the app via Homebrew:
 ```
-brew install alienator88/homebrew-cask/viz
+brew install viz
 ```
 </details>
 
