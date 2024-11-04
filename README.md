@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.6
+   <strong>Version: </strong>1.7
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -19,7 +19,7 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 
 ## Features
 - 100% Swift
-- Small app size (~3MB)
+- Small app size (~4MB)
 - Very quick extraction process
 - Copies to clipboard automatically, ready to paste
 - Post-processing option to execute shell commands when capture is taken. Can use the captured text via `[ocr]` token within the shell commands
