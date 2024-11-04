@@ -106,6 +106,13 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
     @State private var isHovered = false
     let image: String
     let size: CGFloat
+    let color: Color?
+
+    init(image: String, size: CGFloat, color: Color? = Color("mode")) {
+        self.image = image
+        self.size = size
+        self.color = color
+    }
 
     func makeBody(configuration: Configuration) -> some View {
         HStack {
@@ -115,7 +122,7 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: size)
-                    .foregroundColor(Color("mode"))
+                    .foregroundColor(color)
                 configuration.label
             }
             Spacer()
@@ -143,6 +150,31 @@ struct SpacedToggle: ToggleStyle {
         HStack {
             configuration.label
             Spacer() // Adds space between the label and the switch
+            Switch(isOn: configuration.$isOn)
+                .labelsHidden() // Hide default labels of the switch to use the custom label
+        }
+    }
+}
+
+struct SpacedToggleSeconds: ToggleStyle {
+    @AppStorage("previewSeconds") var seconds: Double = 5.0
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 0) {
+
+            configuration.label
+
+            Picker("", selection: $seconds) {
+                Text("3s").tag(3.0)
+                Text("5s").tag(5.0)
+                Text("10s").tag(10.0)
+                Text("20s").tag(20.0)
+                Text("30s").tag(30.0)
+            }
+            .buttonStyle(.borderless)
+
+            Spacer() // Adds space between the label and the switch
+
             Switch(isOn: configuration.$isOn)
                 .labelsHidden() // Hide default labels of the switch to use the custom label
         }

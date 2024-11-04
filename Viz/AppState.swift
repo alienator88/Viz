@@ -9,9 +9,8 @@ import Foundation
 import ServiceManagement
 
 class AppState: ObservableObject {
-    @Published var releases = [Release]()
-    @Published var progressBar: (String, Double) = ("Ready", 0.0)
     @Published var isLaunchAtLoginEnabled: Bool = false
+    @Published var processing: Bool = false
 
     init() {
         fetchLaunchAtLoginStatus()
@@ -28,11 +27,3 @@ class AppState: ObservableObject {
     }
 
 }
-
-
-enum NewWindow:Int
-{
-    case update
-    case no_update
-}
-

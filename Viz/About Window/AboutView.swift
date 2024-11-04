@@ -1,22 +1,50 @@
 import SwiftUI
+import AlinFoundation
 
 struct AboutView: View {
-
-    let icon: NSImage
-    let name: String
-    let version: String
-    let build: String
-    let developerName: String
+    @EnvironmentObject var updater: Updater
 
     var body: some View {
 
-        VStack {
+        VStack(spacing: 0) {
 
-            Image(nsImage: icon)
+            HStack {
+                Spacer()
+                if updater.updateAvailable {
+                    UpdateBadge(updater: updater)
+                        .frame(width: 200)
+                        .padding()
+                } else {
+                    HStack {
+                        Text("No updates available")
+                            .foregroundStyle(.secondary)
+                        Button("Refresh") {
+                            updater.checkForUpdatesForce(showSheet: false)
+                        }
+                    }
+                    .padding()
+
+                }
+            }
+
+            Spacer()
+
+            FrequencyView(updater: updater)
+                .frame(width: 250)
                 .padding()
-//                .padding(.bottom, 5)
+                .background {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.secondary.opacity(0.1))
+                    //                        .strokeBorder(.secondary.opacity(0.5), lineWidth: 1)
+                }
 
-            Text(name)
+
+
+
+            Image(nsImage: NSApp.applicationIconImage ?? NSImage())
+                .padding()
+
+            Text(Bundle.main.name)
                 .font(.title)
                 .bold()
                 .foregroundStyle(
@@ -27,47 +55,22 @@ struct AboutView: View {
                     )
                 )
 
-            Text("Version \(version) (Build \(build))")
+            Text("Version \(Bundle.main.version) (Build \(Bundle.main.buildVersion))")
                 .padding(.top, 4)
 
             Spacer()
 
-//            Divider()
-//                .padding(.vertical)
-
-//            HStack() {
-//                Text("Resources").font(.title2).bold()
-//                Spacer()
-//            }
-//            .padding()
-//
-//            HStack{
-//                VStack(alignment: .leading){
-//                    Text("App Icon")
-//                    Text("ChatGPT").font(.footnote)
-//                }
-//                Spacer()
-//                Button
-//                {
-//                    NSWorkspace.shared.open(URL(string: "https://www.freepik.com/free-vector/classic-spartan-helmet-with-gradient-style_3272693.htm")!)
-//                } label: {
-//                    Label("Site", systemImage: "paperplane")
-//                }
-//            }
-//            .padding()
-
             HStack(spacing: 0){
                 Spacer()
                 Text("Made with ❤️ by ")
-                Text("\(developerName)")
+                Text("Alin Lupascu")
                     .bold()
                 Spacer()
             }
             .padding()
 
-
         }
-        .padding()
+        .ignoresSafeArea(edges: .top)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

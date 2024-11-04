@@ -11,13 +11,12 @@ import Foundation
 
 
 struct TextRecognition {
-//    @ObservedObject var recognizedContent: RecognizedContent
-    var recognizedContent: RecognizedContent
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("postcommands") var postCommands: String = ""
     @AppStorage("cmdOutput") var cmdOutput: String = ""
     @AppStorage("processing") var processing: Bool = false
 
+    var recognizedContent: RecognizedContent
     var image: NSImage
     var didFinishRecognition: () -> Void
 
@@ -35,8 +34,8 @@ struct TextRecognition {
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
                     if processing {
-                        cmdOutput = "Loading.."
-                        Task(priority: .high) {
+                        cmdOutput = "Running post-processing commands.."
+                        Task(priority: .userInitiated) {
                             let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
                             let command = replaceContentToken(in: postCommands, with: combinedText)
                             cmdOutput = executeShellCommand(command)
@@ -48,8 +47,6 @@ struct TextRecognition {
             }
         }
     }
-
-
 
     private func getTextRecognitionRequest(with textItem: TextItem) -> VNRecognizeTextRequest {
         @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
@@ -97,8 +94,8 @@ struct TextRecognition {
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
                     if processing {
-                        cmdOutput = "Loading.."
-                        Task(priority: .high) {
+                        cmdOutput = "Running post-processing commands.."
+                        Task(priority: .userInitiated) {
                             let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
                             let command = replaceContentToken(in: postCommands, with: combinedText)
                             cmdOutput = executeShellCommand(command)
@@ -156,19 +153,23 @@ struct TextRecognition {
 
 
 class CaptureService {
+    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("cmdOutput") var cmdOutput: String = ""
+    @AppStorage("mute") var mute: Bool = false
+    @AppStorage("processing") var processing: Bool = false
+
     static let shared = CaptureService()
     var screenCaptureUtility = ScreenCaptureUtility()
     var recognizedContent = RecognizedContent()
     let pasteboard = NSPasteboard.general
-    @AppStorage("postcommands") var postCommands: String = ""
-    @AppStorage("cmdOutput") var cmdOutput: String = ""
-    @AppStorage("processing") var processing: Bool = false
 
     func captureText() {
         cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-                playSound(named: "printscreen")
+                if !self.mute {
+                    playSound()
+                }
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)
@@ -190,7 +191,9 @@ class CaptureService {
         cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-                playSound(named: "printscreen")
+                if !self.mute {
+                    playSound()
+                }
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)

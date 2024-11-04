@@ -65,6 +65,7 @@ struct PreviewContentView: View {
 
 func showPreview(content: RecognizedContent) {
     @AppStorage("closePreview") var closePreview: Bool = false
+    @AppStorage("previewSeconds") var seconds: Double = 5.0
 
     let hostingView = NSHostingView(rootView: PreviewContentView(content: content))
     hostingView.frame = CGRect(x: 0, y: 0, width: 300, height: 200)
@@ -91,7 +92,7 @@ func showPreview(content: RecognizedContent) {
 
     previewWindow?.orderFront(nil)
     if closePreview {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             previewWindow?.orderOut(nil)
             previewWindow = nil
         }

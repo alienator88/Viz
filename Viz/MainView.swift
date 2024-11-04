@@ -8,22 +8,23 @@
 import Foundation
 import SwiftUI
 import KeyboardShortcuts
+import AlinFoundation
 
 struct ContentView: View {
-    @StateObject var appState = AppState()
+    @EnvironmentObject var appState: AppState
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
     @AppStorage("closePreview") var closePreview: Bool = false
     @AppStorage("processing") var processing: Bool = false
     @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("mute") var mute: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var updater: Updater
+
+    
 
     var body: some View {
-//        VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
-//            .overlay{
-//
-//
-//            }
+
         VStack(alignment: .center, spacing: 15) {
 
             Spacer()
@@ -85,6 +86,48 @@ struct ContentView: View {
             .help("Clear clipboard contents and stored captures")
             .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
 
+            GroupBox(label: Text("Settings").font(.title2)) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Toggle("Append consecutive captures", isOn: $appendRecognizedText)
+                        .toggleStyle(SpacedToggle())
+                        .help("When enabled, consecutive captures will be appended to the clipboard")
+
+                    Toggle("Keep line breaks in captures", isOn: $keepLineBreaks)
+                        .toggleStyle(SpacedToggle())
+                        .help("When enabled, new lines will be added in scanned text")
+
+                    Toggle("Hide capture window after", isOn: $closePreview)
+                        .toggleStyle(SpacedToggleSeconds())
+                        .help("When enabled, captured content preview will close after [X] seconds")
+
+                    Toggle("Post-processing", isOn: $processing)
+                        .toggleStyle(SpacedToggle())
+                        .help("When enabled, you can execute shell functions after capture")
+
+                    Toggle("Mute sounds", isOn: $mute)
+                        .toggleStyle(SpacedToggle())
+                        .help("Mute the screen capture notification sound")
+                    
+                    Toggle("Launch at login", isOn: Binding(
+                        get: { appState.isLaunchAtLoginEnabled },
+                        set: { newValue in
+                            updateOnMain {
+                                appState.isLaunchAtLoginEnabled = newValue
+                                updateLaunchAtLoginStatus(newValue: newValue)
+                            }
+
+                        }
+                    ))
+                    .toggleStyle(SpacedToggle())
+
+                }
+                .padding(6)
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
             if processing {
                 GroupBox(label: {
                     HStack(alignment: .center, spacing: 5) {
@@ -124,59 +167,16 @@ struct ContentView: View {
             }
 
 
-
-            GroupBox(label: Text("Settings").font(.title2)) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Toggle("Append consecutive captures", isOn: $appendRecognizedText)
-                        .toggleStyle(SpacedToggle())
-                        .help("When enabled, consecutive captures will be appended to the clipboard")
-                    Toggle("Keep line breaks in captures", isOn: $keepLineBreaks)
-                        .toggleStyle(SpacedToggle())
-                        .help("When enabled, new lines will be added in scanned text")
-                    Toggle("Auto-hide capture window (3s)", isOn: $closePreview)
-                        .toggleStyle(SpacedToggle())
-                        .help("When enabled, captured content preview will close after 3 seconds")
-                    Toggle("Post-processing", isOn: $processing)
-                        .toggleStyle(SpacedToggle())
-                        .help("When enabled, you can execute shell functions after capture")
-                    Toggle("Launch at login", isOn: Binding(
-                        get: { appState.isLaunchAtLoginEnabled },
-                        set: { newValue in
-                            updateOnMain {
-                                appState.isLaunchAtLoginEnabled = newValue
-                                updateLaunchAtLoginStatus(newValue: newValue)
-                            }
-
-                        }
-                    ))
-                    .toggleStyle(SpacedToggle())
-
-                }
-                .padding(6)
-                .padding(.vertical, 4)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-
             HStack() {
 
                 Button {
-                    AboutWindow.show()
+                    AboutWindow.show(updater: updater)
                     dismiss()
                 } label: {
-                    Text("About")
+                    Text(updater.updateAvailable ? "New Update" : "About")
+                        .foregroundStyle(updater.updateAvailable ? .green : .primary)
                 }
-                .buttonStyle(RoundedRectangleButtonStyle(image: "info.circle", size: 15))
-
-                Button {
-                    loadGithubReleases(appState: appState, manual: true)
-                    dismiss()
-                } label: {
-                    Text("Update")
-                }
-                .buttonStyle(RoundedRectangleButtonStyle(image: "arrow.down.circle", size: 15))
+                .buttonStyle(RoundedRectangleButtonStyle(image: updater.updateAvailable ? "arrow.down.circle" : "info.circle", size: 15, color: updater.updateAvailable ? .green : .primary))
 
 
                 Button("Quit") {
@@ -191,6 +191,6 @@ struct ContentView: View {
         }
         .padding()
         .background(Color("bg"))
-        .frame(width: 330, height: processing ? 710 : 590)
+        .frame(width: 330, height: processing ? 740 : 620)
     }
 }

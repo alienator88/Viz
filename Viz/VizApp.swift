@@ -7,28 +7,23 @@
 
 import SwiftUI
 import KeyboardShortcuts
+import AlinFoundation
 
 @main
 struct VizApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appState = AppState()
+    @StateObject private var updater = Updater(owner: "alienator88", repo: "Viz")
 
     var body: some Scene {
         MenuBarExtra("Viz", systemImage: "eye", content: {
             ContentView()
                 .environment(\.colorScheme, .dark)
                 .preferredColorScheme(.dark)
-                .onAppear {
-#if !DEBUG
-                    loadGithubReleases(appState: appState)
-#endif
-                }
+                .environmentObject(updater)
+                .environmentObject(appState)
         })
         .menuBarExtraStyle(.window)
-        .commands {
-            AboutCommand(appState: appState)
-            CommandGroup(replacing: .newItem, addition: { })
-        }
     }
 }
 

@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 import AppKit
-import OSLog
 import ServiceManagement
+
 
 class TextItem: Identifiable {
     var id: String
@@ -46,8 +46,8 @@ func clearClipboard() {
 }
 
 
-func playSound(named soundName: String) {
-    if let sound = NSSound(named: soundName) {
+func playSound() {
+    if let sound = NSSound(named: "capture") {
         sound.play()
     }
 }
@@ -75,12 +75,6 @@ class ScreenCaptureUtility {
     }
 }
 
-
-func printOS(_ items: Any..., separator: String = " ", terminator: String = "\n") {
-    let message = items.map { "\($0)" }.joined(separator: separator)
-    let log = OSLog(subsystem: "com.alienator88.viz", category: "Application")
-    os_log("%@", log: log, type: .default, message)
-}
 
 
 // Check app directory based on user permission
@@ -137,16 +131,6 @@ func relaunchApp(afterDelay seconds: TimeInterval = 0.5) -> Never {
     exit(0)
 }
 
-func ensureApplicationSupportFolderExists() {
-    let fileManager = FileManager.default
-    let supportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!.appendingPathComponent("\(Bundle.main.bundleIdentifier!)")
-
-    // Check to make sure Application Support folder exists
-    if !fileManager.fileExists(atPath: supportURL.path) {
-        try! fileManager.createDirectory(at: supportURL, withIntermediateDirectories: true)
-        printOS("Created Application Support/\(Bundle.main.bundleIdentifier!) folder")
-    }
-}
 
 
 func updateLaunchAtLoginStatus(newValue: Bool) {

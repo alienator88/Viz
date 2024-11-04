@@ -1,14 +1,16 @@
 import AppKit
 import SwiftUI
+import AlinFoundation
 
 class AboutWindow: NSWindowController {
-    
-    static func show() {
-        AboutWindow().window?.makeKeyAndOrderFront(nil)
+
+    static func show(updater: Updater) {
+        let aboutWindow = AboutWindow(updater: updater) // Inject updater
+        aboutWindow.window?.makeKeyAndOrderFront(nil)
     }
     
-    convenience init() {
-        
+    convenience init(updater: Updater) { // Add updater parameter
+
         let window = Self.makeWindow()
         
         window.backgroundColor = NSColor.controlBackgroundColor
@@ -21,8 +23,9 @@ class AboutWindow: NSWindowController {
         visualEffect.state = .active
         visualEffect.material = .sidebar
 
-        let contentView = makeAboutView()
-        
+        let contentView = AboutView()
+            .environmentObject(updater)
+
         let hostView = NSHostingView(rootView: contentView)
         
         window.contentView = visualEffect
@@ -37,7 +40,7 @@ class AboutWindow: NSWindowController {
     }
     
     private static func makeWindow() -> NSWindow {
-        let contentRect = NSRect(x: 0, y: 0, width: 400, height: 400)
+        let contentRect = NSRect(x: 0, y: 0, width: 400, height: 420)
         let styleMask: NSWindow.StyleMask = [
             .titled,
             .closable,
@@ -49,14 +52,5 @@ class AboutWindow: NSWindowController {
                         backing: .buffered,
                         defer: false)
     }
-    
-    private func makeAboutView() -> some View {
-        AboutView(
-            icon: NSApp.applicationIconImage ?? NSImage(),
-            name: Bundle.main.name,
-            version: Bundle.main.version,
-            build: Bundle.main.buildVersion,
-            developerName: "Alin Lupascu")
-        .frame(width: 500, height: 260)
-    }
+
 }
