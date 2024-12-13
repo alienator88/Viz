@@ -63,8 +63,7 @@ struct PreviewContentView: View {
     }
 }
 
-func showPreview(content: RecognizedContent) {
-    @AppStorage("closePreview") var closePreview: Bool = false
+func showPreviewWindow(content: RecognizedContent) {
     @AppStorage("previewSeconds") var seconds: Double = 5.0
 
     let hostingView = NSHostingView(rootView: PreviewContentView(content: content))
@@ -91,11 +90,9 @@ func showPreview(content: RecognizedContent) {
     }
 
     previewWindow?.orderFront(nil)
-    if closePreview {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            previewWindow?.orderOut(nil)
-            previewWindow = nil
-        }
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        previewWindow?.orderOut(nil)
+        previewWindow = nil
     }
 
 }
@@ -142,8 +139,8 @@ struct CmdOutputView: View {
     }
 }
 
-func showOutput() {
-    @AppStorage("closePreview") var closePreview: Bool = false
+func showOutputWindow() {
+    @AppStorage("previewSeconds") var seconds: Double = 5.0
 
     let hostingView = NSHostingView(rootView: CmdOutputView())
     hostingView.frame = CGRect(x: 0, y: 0, width: 300, height: 200)
@@ -169,11 +166,9 @@ func showOutput() {
     }
 
     cmdOutputWindow?.orderFront(nil)
-    if closePreview {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            cmdOutputWindow?.orderOut(nil)
-            cmdOutputWindow = nil
-        }
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        cmdOutputWindow?.orderOut(nil)
+        cmdOutputWindow = nil
     }
 
 }

@@ -14,7 +14,7 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
-    @AppStorage("closePreview") var closePreview: Bool = false
+    @AppStorage("showPreview") var showPreview: Bool = true
     @AppStorage("processing") var processing: Bool = false
     @AppStorage("postcommands") var postCommands: String = ""
     @AppStorage("mute") var mute: Bool = false
@@ -96,9 +96,9 @@ struct ContentView: View {
                         .toggleStyle(SpacedToggle())
                         .help("When enabled, new lines will be added in scanned text")
 
-                    Toggle("Hide capture window after", isOn: $closePreview)
+                    Toggle("Show capture window for", isOn: $showPreview)
                         .toggleStyle(SpacedToggleSeconds())
-                        .help("When enabled, captured content preview will close after [X] seconds")
+                        .help("When enabled, captured content preview will show and close after [X] seconds. Otherwise it's not shown at all.")
 
                     Toggle("Post-processing", isOn: $processing)
                         .toggleStyle(SpacedToggle())

@@ -170,6 +170,7 @@ struct SpacedToggleSeconds: ToggleStyle {
                 Text("10s").tag(10.0)
                 Text("20s").tag(20.0)
                 Text("30s").tag(30.0)
+                Text("60s").tag(60.0)
             }
             .buttonStyle(.borderless)
 

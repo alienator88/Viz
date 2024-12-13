@@ -157,6 +157,7 @@ class CaptureService {
     @AppStorage("cmdOutput") var cmdOutput: String = ""
     @AppStorage("mute") var mute: Bool = false
     @AppStorage("processing") var processing: Bool = false
+    @AppStorage("showPreview") var showPreview: Bool = true
 
     static let shared = CaptureService()
     var screenCaptureUtility = ScreenCaptureUtility()
@@ -174,11 +175,13 @@ class CaptureService {
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
-                    showPreview(content: self.recognizedContent)
+                    if self.showPreview {
+                        showPreviewWindow(content: self.recognizedContent)
+                    }
                     if self.processing {
                         cmdOutputWindow?.orderOut(nil)
                         cmdOutputWindow = nil
-                        showOutput()
+                        showOutputWindow()
                     }
                 }.recognizeText()
             } else {
@@ -198,11 +201,13 @@ class CaptureService {
                 TextRecognition(recognizedContent: self.recognizedContent, image: image) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
-                    showPreview(content: self.recognizedContent)
+                    if self.showPreview {
+                        showPreviewWindow(content: self.recognizedContent)
+                    }
                     if self.processing {
                         cmdOutputWindow?.orderOut(nil)
                         cmdOutputWindow = nil
-                        showOutput()
+                        showOutputWindow()
                     }
                 }.recognizeBarcodes()
             } else {

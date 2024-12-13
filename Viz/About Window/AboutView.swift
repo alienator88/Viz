@@ -19,7 +19,7 @@ struct AboutView: View {
                         Text("No updates available")
                             .foregroundStyle(.secondary)
                         Button("Refresh") {
-                            updater.checkForUpdatesForce(showSheet: false)
+                            updater.checkForUpdates(sheet: false)
                         }
                     }
                     .padding()
