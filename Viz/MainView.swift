@@ -104,7 +104,7 @@ struct ContentView: View {
                         .toggleStyle(SpacedToggle())
                         .help("When enabled, you can execute shell functions after capture")
 
-                    Toggle("Mute sounds", isOn: $mute)
+                    Toggle("Mute capture sound", isOn: $mute)
                         .toggleStyle(SpacedToggle())
                         .help("Mute the screen capture notification sound")
                     

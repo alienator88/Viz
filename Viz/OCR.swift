@@ -178,7 +178,7 @@ class CaptureService {
                     if self.showPreview {
                         showPreviewWindow(content: self.recognizedContent)
                     }
-                    if self.processing {
+                    if self.processing && self.showPreview {
                         cmdOutputWindow?.orderOut(nil)
                         cmdOutputWindow = nil
                         showOutputWindow()
@@ -204,7 +204,7 @@ class CaptureService {
                     if self.showPreview {
                         showPreviewWindow(content: self.recognizedContent)
                     }
-                    if self.processing {
+                    if self.processing && self.showPreview {
                         cmdOutputWindow?.orderOut(nil)
                         cmdOutputWindow = nil
                         showOutputWindow()
