@@ -10,7 +10,6 @@ import ServiceManagement
 
 class AppState: ObservableObject {
     @Published var isLaunchAtLoginEnabled: Bool = false
-    @Published var processing: Bool = false
 
     init() {
         fetchLaunchAtLoginStatus()
@@ -26,4 +25,10 @@ class AppState: ObservableObject {
         }
     }
 
+}
+
+
+class HistoryState: ObservableObject {
+    static let shared = HistoryState()
+    @Published var historyItems: [TextItem] = []
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import Vision
 import Foundation
+import AlinFoundation
 
 
 struct TextRecognition {
@@ -18,6 +19,7 @@ struct TextRecognition {
 
     var recognizedContent: RecognizedContent
     var image: NSImage
+    var historyState: HistoryState
     var didFinishRecognition: () -> Void
 
     func recognizeText() {
@@ -33,6 +35,7 @@ struct TextRecognition {
                     self.updateRecognizedContent(with: textItem)
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
+                    historyState.historyItems.append(textItem)
                     if processing {
                         cmdOutput = "Running post-processing commands.."
                         Task(priority: .userInitiated) {
@@ -93,6 +96,7 @@ struct TextRecognition {
                     self.updateRecognizedContent(with: barcodeItem)
                     self.didFinishRecognition()
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
+                    historyState.historyItems.append(barcodeItem)
                     if processing {
                         cmdOutput = "Running post-processing commands.."
                         Task(priority: .userInitiated) {
@@ -172,7 +176,7 @@ class CaptureService {
                     playSound()
                 }
 
-                TextRecognition(recognizedContent: self.recognizedContent, image: image) {
+                TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
                     if self.showPreview {
@@ -198,7 +202,7 @@ class CaptureService {
                     playSound()
                 }
 
-                TextRecognition(recognizedContent: self.recognizedContent, image: image) {
+                TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
                     previewWindow?.orderOut(nil)
                     previewWindow = nil
                     if self.showPreview {

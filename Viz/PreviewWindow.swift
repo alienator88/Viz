@@ -8,6 +8,7 @@
 import Foundation
 import AppKit
 import SwiftUI
+import AlinFoundation
 
 var previewWindow: NSWindow?
 var cmdOutputWindow: NSWindow?
@@ -171,6 +172,68 @@ func showOutputWindow() {
         cmdOutputWindow = nil
     }
 
+}
+
+
+
+struct HistoryView: View {
+    @ObservedObject private var historyState = HistoryState.shared
+    @State private var tappedItemID: String?
+
+    var body: some View {
+
+        VStack(alignment: .center, spacing: 0) {
+            Text("History")
+                .font(.title)
+
+            Spacer()
+
+            if historyState.historyItems.isEmpty {
+                Text("Create a capture to display here")
+            } else {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(historyState.historyItems) { item in
+                            HStack(alignment: .center) {
+                                Text(item.text)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                if tappedItemID == item.id {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.green)
+                                }
+                            }
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(.secondary.opacity(0.1))
+                            }
+                            .scaleEffect(tappedItemID == item.id ? 0.98 : 1.0)
+                            .animation(.easeInOut(duration: 0.2), value: tappedItemID)
+                            .onTapGesture {
+                                tappedItemID = item.id
+                                copyToClipboard(item.text)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    tappedItemID = nil
+                                }
+                            }
+                        }
+                    }
+                }
+                .scrollIndicators(.never)
+//                .padding(.vertical)
+            }
+
+            Spacer()
+
+            Text("Click item to copy")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding(.bottom)
+        }
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+    }
 }
 
 

@@ -12,6 +12,7 @@ import AlinFoundation
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var historyState: HistoryState
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
     @AppStorage("showPreview") var showPreview: Bool = true
@@ -20,8 +21,8 @@ struct ContentView: View {
     @AppStorage("mute") var mute: Bool = false
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var updater: Updater
+    @State private var windowController = WindowManager()
 
-    
 
     var body: some View {
 
@@ -57,7 +58,6 @@ struct ContentView: View {
                         dismiss()
                     }
                     .help("Capture section of screen to extract text from")
-                    .keyboardShortcut("1", modifiers: [.command, .shift])
                     .buttonStyle(RoundedRectangleButtonStyle(image: "text.viewfinder", size: 30))
 
                     KeyboardShortcuts.Recorder(for: .captureText)
@@ -70,7 +70,6 @@ struct ContentView: View {
                         dismiss()
                     }
                     .help("Capture QR Code or Barcode to extract text from")
-                    .keyboardShortcut("2", modifiers: [.command, .shift])
                     .buttonStyle(RoundedRectangleButtonStyle(image: "qrcode.viewfinder", size: 30))
 
                     KeyboardShortcuts.Recorder(for: .captureBarcode)
@@ -78,13 +77,23 @@ struct ContentView: View {
 
             }
 
+            HStack(spacing: 15) {
+                Button("History") {
+                    windowController.open(with: HistoryView(), width: 500, height: 600)
+                }
+                .help("Show history of captures from this session")
+                .buttonStyle(RoundedRectangleButtonStyle(image: "clock", size: 30))
 
-            Button("Clear Clipboard") {
-                clearClipboard()
-                dismiss()
+                Button("Clear Captures") {
+                    clearClipboard()
+                    dismiss()
+                }
+                .help("Clear clipboard contents and stored captures")
+                .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
             }
-            .help("Clear clipboard contents and stored captures")
-            .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
+
+
+
 
             GroupBox(label: Text("Settings").font(.title2)) {
                 VStack(alignment: .leading, spacing: 10) {

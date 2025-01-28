@@ -40,6 +40,7 @@ func clearClipboard() {
     DispatchQueue.main.async {
         CaptureService.shared.recognizedContent.items.removeAll()
         CaptureService.shared.pasteboard.clearContents()
+        HistoryState.shared.historyItems.removeAll()
         previewWindow?.orderOut(nil)
         previewWindow = nil
     }

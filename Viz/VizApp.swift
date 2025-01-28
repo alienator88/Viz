@@ -22,6 +22,7 @@ struct VizApp: App {
                 .preferredColorScheme(.dark)
                 .environmentObject(updater)
                 .environmentObject(appState)
+                .environmentObject(HistoryState.shared)
         })
         .menuBarExtraStyle(.window)
     }
@@ -54,5 +55,5 @@ extension KeyboardShortcuts.Name {
 }
 
 extension KeyboardShortcuts.Name {
-    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .option]))
+    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .shift]))
 }
