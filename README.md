@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.8
+   <strong>Version: </strong>1.9
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -27,6 +27,7 @@ Extract text from images, videos, QR codes, barcodes with a simple snip mechanis
 - Shows copied text in a floating window, which can be set to auto-hide as well
 - Enable or disable line breaks in the extracted text
 - Append multiple text snippets to the clipboard by enabling Append option in Settings, otherwise it only holds one snippet at a time
+- Session history
 - Launch at login option
 - Custom auto-updater that pulls latest release notes and binaries from GitHub Releases (Viz should be ran from /Applications folder to avoid permission issues)
 
