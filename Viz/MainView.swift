@@ -86,7 +86,6 @@ struct ContentView: View {
 
                 Button("Clear Captures") {
                     clearClipboard()
-                    dismiss()
                 }
                 .help("Clear clipboard contents and stored captures")
                 .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
