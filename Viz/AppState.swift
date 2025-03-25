@@ -7,9 +7,12 @@
 
 import Foundation
 import ServiceManagement
+import SwiftUI
 
 class AppState: ObservableObject {
+    static let shared = AppState()
     @Published var isLaunchAtLoginEnabled: Bool = false
+    @Published var colorSample: ColorSample = ColorSample(hexColor: "", rgbColor: "", color: .clear)
 
     init() {
         fetchLaunchAtLoginStatus()
@@ -31,4 +34,10 @@ class AppState: ObservableObject {
 class HistoryState: ObservableObject {
     static let shared = HistoryState()
     @Published var historyItems: [TextItem] = []
+}
+
+struct ColorSample {
+    let hexColor: String
+    let rgbColor: String
+    let color: Color
 }

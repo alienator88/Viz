@@ -10,9 +10,9 @@ struct AboutView: View {
 
             HStack {
                 Spacer()
-                if updater.updateAvailable {
-                    UpdateBadge(updater: updater)
-                        .frame(width: 200)
+                if !updater.updateAvailable {
+                    UpdateBadge(updater: updater, hideLabel: true)
+//                        .frame(width: 200)
                         .padding()
                 } else {
                     HStack {
@@ -56,7 +56,17 @@ struct AboutView: View {
                 )
 
             Text("Version \(Bundle.main.version) (Build \(Bundle.main.buildVersion))")
-                .padding(.top, 4)
+                .padding(.vertical, 4)
+
+            Button {
+                NSWorkspace.shared.open(URL(string: "https://github.com/alienator88/Viz")!)
+            } label: {
+                Label("GitHub", systemImage: "paperplane")
+                    .padding(5)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.blue)
+
 
             Spacer()
 

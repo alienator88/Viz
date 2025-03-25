@@ -12,6 +12,8 @@ import AlinFoundation
 
 var previewWindow: NSWindow?
 var cmdOutputWindow: NSWindow?
+var colorWindow: NSWindow?
+
 
 struct PreviewContentView: View {
     let content: RecognizedContent
@@ -172,6 +174,95 @@ func showOutputWindow() {
         cmdOutputWindow = nil
     }
 
+}
+
+
+
+func showColorPreviewWindowBackend() {
+    @AppStorage("previewSeconds") var seconds: Double = 5.0
+
+    let hostingView = NSHostingView(rootView: ColorPreviewView())
+    hostingView.frame = CGRect(x: 0, y: 0, width: 300, height: 200)
+
+    colorWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 300, height: 200),
+                             styleMask: .borderless,
+                             backing: .buffered,
+                             defer: false)
+    colorWindow?.contentView = hostingView
+    colorWindow?.contentView?.wantsLayer = true
+    colorWindow?.contentView?.layer?.cornerRadius = 10
+    colorWindow?.contentView?.layer?.masksToBounds = true
+    colorWindow?.level = .floating
+    colorWindow?.isOpaque = false
+    colorWindow?.backgroundColor = .clear
+
+    //    notificationWindow?.center()
+    if let screen = NSScreen.main {
+        let screenRect = screen.visibleFrame
+        let windowX = screenRect.maxX - 300 - 30
+        let windowY = screenRect.maxY - 200 - 30
+        colorWindow?.setFrameOrigin(NSPoint(x: windowX, y: windowY))
+    }
+
+    colorWindow?.orderFront(nil)
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        colorWindow?.orderOut(nil)
+        colorWindow = nil
+    }
+
+}
+
+
+struct ColorPreviewView: View {
+
+    var body: some View {
+        VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
+            .overlay(
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                        Image(systemName: "clipboard")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 14, height: 14)
+                        Text("Clipboard")
+                            .font(.title2)
+                        Spacer()
+
+                        Button("Close") {
+                            colorWindow?.orderOut(nil)
+                            colorWindow = nil
+                        }
+                        .buttonStyle(SimpleButtonStyle(icon: "x.circle.fill", help: "Close", color: Color("mode"), size: 14))
+                    }
+
+                    Divider()
+
+                    if AppState.shared.colorSample.hexColor.isEmpty {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Text("No color selected")
+                                .foregroundColor(.secondary)
+                            Spacer()
+                        }
+
+                        Spacer()
+                    } else {
+                        Text("Hex: \(AppState.shared.colorSample.hexColor)")
+                        Text("RGB: \(AppState.shared.colorSample.rgbColor)")
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(AppState.shared.colorSample.color)
+                    }
+
+
+
+                }
+                    .padding()
+                    .foregroundColor(Color("mode"))
+            )
+
+
+    }
 }
 
 

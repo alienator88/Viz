@@ -35,6 +35,14 @@ func copyTextItemsToClipboard(textItems: [TextItem]) {
     pasteboard.setString(combinedText, forType: .string)
 }
 
+func copyColorsToClipboard(color: ColorSample) {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+//    let textItems = [color.hexColor, color.rgbColor]
+//    let combinedText = textItems.map { $0 }.joined(separator: "\n")
+    pasteboard.setString(color.hexColor, forType: .string)
+}
+
 
 func clearClipboard() {
     DispatchQueue.main.async {
@@ -43,6 +51,76 @@ func clearClipboard() {
         HistoryState.shared.historyItems.removeAll()
         previewWindow?.orderOut(nil)
         previewWindow = nil
+    }
+}
+
+
+func pickColor() async -> ColorSample {
+    await withCheckedContinuation { continuation in
+        NSColorSampler().show { selectedColor in
+            if let selectedColor = selectedColor,
+               let color = selectedColor.usingColorSpace(.deviceRGB) {
+                let red = Int(color.redComponent * 255)
+                let green = Int(color.greenComponent * 255)
+                let blue = Int(color.blueComponent * 255)
+                let hex = String(format: "#%02X%02X%02X", red, green, blue)
+                let rgb = "(\(red),\(green),\(blue))"
+                let swiftUIColor = Color(nsColor: color)
+                copyColorsToClipboard(color: ColorSample(hexColor: hex, rgbColor: rgb, color: swiftUIColor))
+                continuation.resume(returning: ColorSample(hexColor: hex, rgbColor: rgb, color: swiftUIColor))
+            } else {
+                continuation.resume(returning: ColorSample(hexColor: "", rgbColor: "", color: .clear))
+            }
+        }
+    }
+}
+
+func processColor() {
+    Task {
+        let result = await pickColor()
+        AppState.shared.colorSample = result
+        let textItemHex = TextItem()
+        let textItemRGB = TextItem()
+        textItemHex.text = result.hexColor
+        textItemRGB.text = result.rgbColor
+        HistoryState.shared.historyItems.append(textItemHex)
+        HistoryState.shared.historyItems.append(textItemRGB)
+        updateOnMain {
+            showColorPreviewWindow()
+        }
+    }
+}
+
+func showColorPreviewWindow() {
+    @AppStorage("processing") var processing: Bool = false
+    @AppStorage("showPreview") var showPreview: Bool = true
+
+    colorWindow?.orderOut(nil)
+    colorWindow = nil
+    if showPreview {
+        showColorPreviewWindowBackend()
+    }
+}
+
+extension NSColor {
+    var hex: String {
+        guard let rgbColor = usingColorSpace(.deviceRGB) else { return "N/A" }
+        let red = Int(rgbColor.redComponent * 255)
+        let green = Int(rgbColor.greenComponent * 255)
+        let blue = Int(rgbColor.blueComponent * 255)
+        return String(format: "#%02X%02X%02X", red, green, blue)
+    }
+
+    var rgb: String {
+        guard let rgbColor = usingColorSpace(.deviceRGB) else { return "N/A" }
+        let red = Int(rgbColor.redComponent * 255)
+        let green = Int(rgbColor.greenComponent * 255)
+        let blue = Int(rgbColor.blueComponent * 255)
+        return "(\(red), \(green), \(blue))"
+    }
+
+    var swiftColor: Color {
+        return Color(nsColor: self)
     }
 }
 
@@ -217,3 +295,6 @@ func executeShellCommand(_ command: String) -> String {
 
     return output
 }
+
+
+

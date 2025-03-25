@@ -40,7 +40,7 @@ class AboutWindow: NSWindowController {
     }
     
     private static func makeWindow() -> NSWindow {
-        let contentRect = NSRect(x: 0, y: 0, width: 400, height: 420)
+        let contentRect = NSRect(x: 0, y: 0, width: 400, height: 450)
         let styleMask: NSWindow.StyleMask = [
             .titled,
             .closable,

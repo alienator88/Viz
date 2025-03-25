@@ -12,7 +12,7 @@ import AlinFoundation
 @main
 struct VizApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var appState = AppState()
+    @ObservedObject var appState = AppState.shared
     @StateObject private var updater = Updater(owner: "alienator88", repo: "Viz")
 
     var body: some Scene {
@@ -41,6 +41,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             CaptureService.shared.captureBarcodes()
         }
 
+        KeyboardShortcuts.onKeyUp(for: .eyedropper) {
+            processColor()
+        }
+
 #if !DEBUG
         ensureApplicationSupportFolderExists()
 #endif
@@ -51,9 +55,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 extension KeyboardShortcuts.Name {
-    static let captureText = Self("captureText", default: .init(.one, modifiers: [.command, .shift]))
+    static let captureText = Self("captureText", default: .init(.one, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .shift]))
+    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .control]))
+}
+
+extension KeyboardShortcuts.Name {
+    static let eyedropper = Self("eyedropper", default: .init(.three, modifiers: [.command, .control]))
 }

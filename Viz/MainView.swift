@@ -51,28 +51,40 @@ struct ContentView: View {
 
 
 
-            HStack(spacing: 15) {
+            HStack(spacing: 5) {
                 VStack {
                     Button("Text") {
                         CaptureService.shared.captureText()
                         dismiss()
                     }
                     .help("Capture section of screen to extract text from")
-                    .buttonStyle(RoundedRectangleButtonStyle(image: "text.viewfinder", size: 30))
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "text.viewfinder", size: 15))
 
                     KeyboardShortcuts.Recorder(for: .captureText)
                 }
 
 
                 VStack(alignment: .center) {
-                    Button("QR/Barcode") {
+                    Button("Barcode") {
                         CaptureService.shared.captureBarcodes()
                         dismiss()
                     }
                     .help("Capture QR Code or Barcode to extract text from")
-                    .buttonStyle(RoundedRectangleButtonStyle(image: "qrcode.viewfinder", size: 30))
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "qrcode.viewfinder", size: 15))
 
                     KeyboardShortcuts.Recorder(for: .captureBarcode)
+                }
+
+
+                VStack {
+                    Button("Color") {
+                        dismiss()
+                        processColor()
+                    }
+                    .help("Capture hex/rgb value from click location")
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "eyedropper", size: 15))
+
+                    KeyboardShortcuts.Recorder(for: .eyedropper)
                 }
 
             }
@@ -80,6 +92,7 @@ struct ContentView: View {
             HStack(spacing: 15) {
                 Button("History") {
                     windowController.open(with: HistoryView(), width: 500, height: 600)
+                    dismiss()
                 }
                 .help("Show history of captures from this session")
                 .buttonStyle(RoundedRectangleButtonStyle(image: "clock", size: 30))
@@ -199,6 +212,6 @@ struct ContentView: View {
         }
         .padding()
         .background(Color("bg"))
-        .frame(width: 330, height: processing ? 740 : 620)
+        .frame(width: 450, height: processing ? 740 : 620)
     }
 }
