@@ -35,7 +35,7 @@ Now with a simple color picker as well.
 
 
 ## Preview
-![main](https://github.com/alienator88/Viz/assets/6263626/663bf280-cc72-4856-b4f7-600fad3b5ff7)
+![Screenshot 2025-03-25 at 1 25 53 PM](https://github.com/user-attachments/assets/96079d68-e1d5-4670-a291-58039944d77b)
 
 
 ### Text Extraction Demo
