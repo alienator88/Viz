@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>1.9
+   <strong>Version: </strong>2.0
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -15,6 +15,7 @@
 </br>
 
 Extract text from images, videos, QR codes, barcodes with a simple snip mechanism.
+Now with a simple color picker as well.
 
 
 ## Features
