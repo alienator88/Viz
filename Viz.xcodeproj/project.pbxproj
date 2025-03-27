@@ -15,7 +15,6 @@
 		C7174CB12BC0C6A800DBEF75 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CB02BC0C6A800DBEF75 /* Utilities.swift */; };
 		C73944B72BC4489C00EE7EBF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944B62BC4489C00EE7EBF /* AppState.swift */; };
 		C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BB2BC449C800EE7EBF /* AboutView.swift */; };
-		C73944BE2BC449C800EE7EBF /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BC2BC449C800EE7EBF /* AboutWindow.swift */; };
 		C7472EA12CD957EB00661FEA /* AlinFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C7472EA02CD957EB00661FEA /* AlinFoundation */; };
 		C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76920102BC5EB5E00D23CEC /* MainView.swift */; };
 		C783473E2C0E1B1400F4EE76 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783473D2C0E1B1400F4EE76 /* Styles.swift */; };
@@ -27,19 +26,19 @@
 		C7174C902BC06EE500DBEF75 /* Viz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7174C932BC06EE500DBEF75 /* VizApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VizApp.swift; sourceTree = "<group>"; };
 		C7174C972BC06EE600DBEF75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C7174C9C2BC06EE600DBEF75 /* Viz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Viz.entitlements; sourceTree = "<group>"; };
 		C7174CA22BC06F1200DBEF75 /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		C7174CAA2BC0A52100DBEF75 /* PreviewWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWindow.swift; sourceTree = "<group>"; };
 		C7174CAE2BC0C14900DBEF75 /* capture.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = capture.mp3; sourceTree = "<group>"; };
 		C7174CB02BC0C6A800DBEF75 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C73944B62BC4489C00EE7EBF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		C73944BB2BC449C800EE7EBF /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		C73944BC2BC449C800EE7EBF /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
+		C74D7C942D95CE55009A8C48 /* announcements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = announcements.json; sourceTree = "<group>"; };
+		C74D7C972D95D307009A8C48 /* Viz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Viz.entitlements; sourceTree = "<group>"; };
+		C74D7C982D95D806009A8C48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C766D2892C34D0F100F51BB9 /* Builds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Builds; sourceTree = SOURCE_ROOT; };
 		C76920102BC5EB5E00D23CEC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C783473D2C0E1B1400F4EE76 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		C7C0C0BD2D94D253002140DD /* water.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = water.mp3; sourceTree = "<group>"; };
-		C7FD442B2BC5CADF00777BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,31 +73,39 @@
 		C7174C922BC06EE500DBEF75 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
+				C74D7C982D95D806009A8C48 /* Info.plist */,
+				C74D7C972D95D307009A8C48 /* Viz.entitlements */,
 				C766D2892C34D0F100F51BB9 /* Builds */,
-				C7FD442B2BC5CADF00777BEF /* Info.plist */,
-				C73944BA2BC449BA00EE7EBF /* About Window */,
 				C7174C932BC06EE500DBEF75 /* VizApp.swift */,
-				C7174CA22BC06F1200DBEF75 /* OCR.swift */,
+				C74D7C952D95CF2C009A8C48 /* Views */,
+				C74D7C962D95CF84009A8C48 /* Logic */,
 				C7174C972BC06EE600DBEF75 /* Assets.xcassets */,
-				C7174C9C2BC06EE600DBEF75 /* Viz.entitlements */,
-				C7174CAA2BC0A52100DBEF75 /* PreviewWindow.swift */,
 				C7174CAE2BC0C14900DBEF75 /* capture.mp3 */,
 				C7C0C0BD2D94D253002140DD /* water.mp3 */,
-				C7174CB02BC0C6A800DBEF75 /* Utilities.swift */,
 				C783473D2C0E1B1400F4EE76 /* Styles.swift */,
-				C73944B62BC4489C00EE7EBF /* AppState.swift */,
-				C76920102BC5EB5E00D23CEC /* MainView.swift */,
+				C74D7C942D95CE55009A8C48 /* announcements.json */,
 			);
 			path = Viz;
 			sourceTree = "<group>";
 		};
-		C73944BA2BC449BA00EE7EBF /* About Window */ = {
+		C74D7C952D95CF2C009A8C48 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C73944BB2BC449C800EE7EBF /* AboutView.swift */,
-				C73944BC2BC449C800EE7EBF /* AboutWindow.swift */,
+				C7174CAA2BC0A52100DBEF75 /* PreviewWindow.swift */,
+				C76920102BC5EB5E00D23CEC /* MainView.swift */,
 			);
-			path = "About Window";
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C74D7C962D95CF84009A8C48 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				C7174CA22BC06F1200DBEF75 /* OCR.swift */,
+				C7174CB02BC0C6A800DBEF75 /* Utilities.swift */,
+				C73944B62BC4489C00EE7EBF /* AppState.swift */,
+			);
+			path = Logic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,7 +193,6 @@
 				C7174CAB2BC0A52100DBEF75 /* PreviewWindow.swift in Sources */,
 				C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */,
 				C73944B72BC4489C00EE7EBF /* AppState.swift in Sources */,
-				C73944BE2BC449C800EE7EBF /* AboutWindow.swift in Sources */,
 				C7174CB12BC0C6A800DBEF75 /* Utilities.swift in Sources */,
 				C7174C942BC06EE500DBEF75 /* VizApp.swift in Sources */,
 			);
@@ -324,7 +330,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -342,7 +348,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -361,7 +367,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -379,7 +385,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -31,7 +31,7 @@ struct VizApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     @Environment(\.dismiss) private var dismiss
-    @State private var windowController = WindowManager()
+    @State private var windowController = WindowManager.shared
 
     func applicationDidFinishLaunching(_ notification: Notification) {
 
@@ -48,7 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         KeyboardShortcuts.onKeyUp(for: .history) {
-            self.windowController.open(with: HistoryView(), width: 500, height: 600, material: .sidebar)
+            self.windowController.open(id: "history", with: HistoryView(), width: 500, height: 600, material: .sidebar)
             self.dismiss()
         }
 

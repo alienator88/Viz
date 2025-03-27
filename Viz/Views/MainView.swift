@@ -21,7 +21,7 @@ struct ContentView: View {
     @AppStorage("mute") var mute: Bool = false
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var updater: Updater
-    @State private var windowController = WindowManager()
+    @State private var windowController = WindowManager.shared
 
 
     var body: some View {
@@ -92,7 +92,7 @@ struct ContentView: View {
             HStack(spacing: 15) {
                 VStack {
                     Button("History") {
-                        windowController.open(with: HistoryView(), width: 500, height: 600, material: .sidebar)
+                        windowController.open(id: "history", with: HistoryView(), width: 500, height: 600, material: .sidebar)
                         dismiss()
                     }
                     .help("Show history of captures from this session")
@@ -200,7 +200,7 @@ struct ContentView: View {
             HStack() {
 
                 Button {
-                    AboutWindow.show(updater: updater)
+                    windowController.open(id: "about", with: AboutView().environmentObject(updater), width: 400, height: 450, material: .sidebar)
                     dismiss()
                 } label: {
                     Text(updater.updateAvailable ? "New Update" : "About")
