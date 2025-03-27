@@ -11,16 +11,6 @@ import AppKit
 import ServiceManagement
 
 
-class TextItem: Identifiable {
-    var id: String
-    var text: String = ""
-
-    init() {
-        id = UUID().uuidString
-    }
-}
-
-
 class RecognizedContent: ObservableObject {
     @Published var items = [TextItem]()
 }
@@ -35,12 +25,10 @@ func copyTextItemsToClipboard(textItems: [TextItem]) {
     pasteboard.setString(combinedText, forType: .string)
 }
 
-func copyColorsToClipboard(color: ColorSample) {
+func copyColorsToClipboard(color: ColorItem) {
     let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
-//    let textItems = [color.hexColor, color.rgbColor]
-//    let combinedText = textItems.map { $0 }.joined(separator: "\n")
-    pasteboard.setString(color.hexColor, forType: .string)
+    pasteboard.setString(color.hex, forType: .string)
 }
 
 
@@ -55,7 +43,7 @@ func clearClipboard() {
 }
 
 
-func pickColor() async -> ColorSample {
+func pickColor() async -> ColorItem {
     await withCheckedContinuation { continuation in
         NSColorSampler().show { selectedColor in
             if let selectedColor = selectedColor,
@@ -65,11 +53,10 @@ func pickColor() async -> ColorSample {
                 let blue = Int(color.blueComponent * 255)
                 let hex = String(format: "#%02X%02X%02X", red, green, blue)
                 let rgb = "(\(red),\(green),\(blue))"
-                let swiftUIColor = Color(nsColor: color)
-                copyColorsToClipboard(color: ColorSample(hexColor: hex, rgbColor: rgb, color: swiftUIColor))
-                continuation.resume(returning: ColorSample(hexColor: hex, rgbColor: rgb, color: swiftUIColor))
+                copyColorsToClipboard(color: ColorItem(hex: hex, rgb: rgb))
+                continuation.resume(returning: ColorItem(hex: hex, rgb: rgb))
             } else {
-                continuation.resume(returning: ColorSample(hexColor: "", rgbColor: "", color: .clear))
+                continuation.resume(returning: ColorItem(hex: "", rgb: ""))
             }
         }
     }
@@ -78,13 +65,14 @@ func pickColor() async -> ColorSample {
 func processColor() {
     Task {
         let result = await pickColor()
+
+        guard !result.hex.isEmpty else { return }
+
+        playSound(for: .color(ColorItem(hex: "", rgb: "")))
         AppState.shared.colorSample = result
-        let textItemHex = TextItem()
-        let textItemRGB = TextItem()
-        textItemHex.text = result.hexColor
-        textItemRGB.text = result.rgbColor
-        HistoryState.shared.historyItems.append(textItemHex)
-        HistoryState.shared.historyItems.append(textItemRGB)
+        let colorItem = ColorItem(hex: result.hex, rgb: result.rgb)
+        let entry = HistoryEntry.color(colorItem)
+        HistoryState.shared.historyItems.append(entry)
         updateOnMain {
             showColorPreviewWindow()
         }
@@ -125,8 +113,21 @@ extension NSColor {
 }
 
 
-func playSound() {
-    if let sound = NSSound(named: "capture") {
+func playSound(for entry: HistoryEntry) {
+    @AppStorage("mute") var mute: Bool = false
+
+    guard mute == false else { return }
+
+    let soundName: String
+
+    switch entry {
+    case .text:
+        soundName = "water"
+    case .color:
+        soundName = "water"
+    }
+
+    if let sound = NSSound(named: soundName) {
         sound.play()
     }
 }

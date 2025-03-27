@@ -90,18 +90,27 @@ struct ContentView: View {
             }
 
             HStack(spacing: 15) {
-                Button("History") {
-                    windowController.open(with: HistoryView(), width: 500, height: 600)
-                    dismiss()
-                }
-                .help("Show history of captures from this session")
-                .buttonStyle(RoundedRectangleButtonStyle(image: "clock", size: 30))
+                VStack {
+                    Button("History") {
+                        windowController.open(with: HistoryView(), width: 500, height: 600, material: .sidebar)
+                        dismiss()
+                    }
+                    .help("Show history of captures from this session")
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "clock", size: 30))
 
-                Button("Clear Captures") {
-                    clearClipboard()
+                    KeyboardShortcuts.Recorder(for: .history)
                 }
-                .help("Clear clipboard contents and stored captures")
-                .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
+
+                VStack {
+                    Button("Clear Captures") {
+                        clearClipboard()
+                    }
+                    .help("Clear clipboard contents and stored captures")
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "delete.left", size: 30))
+
+                    KeyboardShortcuts.Recorder(for: .clear)
+                }
+
             }
 
 
@@ -212,6 +221,6 @@ struct ContentView: View {
         }
         .padding()
         .background(Color("bg"))
-        .frame(width: 450, height: processing ? 740 : 620)
+        .frame(width: 450, height: processing ? 760 : 640)
     }
 }

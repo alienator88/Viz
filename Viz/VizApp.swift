@@ -30,6 +30,8 @@ struct VizApp: App {
 
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+    @Environment(\.dismiss) private var dismiss
+    @State private var windowController = WindowManager()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
 
@@ -43,6 +45,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         KeyboardShortcuts.onKeyUp(for: .eyedropper) {
             processColor()
+        }
+
+        KeyboardShortcuts.onKeyUp(for: .history) {
+            self.windowController.open(with: HistoryView(), width: 500, height: 600, material: .sidebar)
+            self.dismiss()
+        }
+
+        KeyboardShortcuts.onKeyUp(for: .clear) {
+            clearClipboard()
         }
 
 #if !DEBUG
@@ -64,4 +75,12 @@ extension KeyboardShortcuts.Name {
 
 extension KeyboardShortcuts.Name {
     static let eyedropper = Self("eyedropper", default: .init(.three, modifiers: [.command, .control]))
+}
+
+extension KeyboardShortcuts.Name {
+    static let history = Self("history", default: .init(.four, modifiers: [.command, .control]))
+}
+
+extension KeyboardShortcuts.Name {
+    static let clear = Self("clear", default: .init(.five, modifiers: [.command, .control]))
 }

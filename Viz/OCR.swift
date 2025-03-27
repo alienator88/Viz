@@ -25,7 +25,7 @@ struct TextRecognition {
     func recognizeText() {
         let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
         let requestHandler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
-        let textItem = TextItem()
+        let textItem = TextItem(text: "")
 
         DispatchQueue.global(qos: .userInitiated).async {
             do {
@@ -34,8 +34,12 @@ struct TextRecognition {
                 DispatchQueue.main.async {
                     self.updateRecognizedContent(with: textItem)
                     self.didFinishRecognition()
+
+                    guard textItem.text != "Unable to extract any text from selection" else { return }
+
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
-                    historyState.historyItems.append(textItem)
+                    playSound(for: .text(TextItem(text: "")))
+                    historyState.historyItems.append(.text(textItem))
                     if processing {
                         cmdOutput = "Running post-processing commands.."
                         Task(priority: .userInitiated) {
@@ -86,7 +90,7 @@ struct TextRecognition {
     func recognizeBarcodes() {
         let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
         let requestHandler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
-        let barcodeItem = TextItem()
+        let barcodeItem = TextItem(text: "")
 
         DispatchQueue.global(qos: .userInitiated).async {
             do {
@@ -95,8 +99,12 @@ struct TextRecognition {
                 DispatchQueue.main.async {
                     self.updateRecognizedContent(with: barcodeItem)
                     self.didFinishRecognition()
+
+                    guard barcodeItem.text != "Unable to extract any qr/barcode from selection" else { return }
+
                     copyTextItemsToClipboard(textItems: self.recognizedContent.items)
-                    historyState.historyItems.append(barcodeItem)
+                    playSound(for: .text(TextItem(text: "")))
+                    historyState.historyItems.append(.text(barcodeItem))
                     if processing {
                         cmdOutput = "Running post-processing commands.."
                         Task(priority: .userInitiated) {
@@ -159,7 +167,7 @@ struct TextRecognition {
 class CaptureService {
     @AppStorage("postcommands") var postCommands: String = ""
     @AppStorage("cmdOutput") var cmdOutput: String = ""
-    @AppStorage("mute") var mute: Bool = false
+//    @AppStorage("mute") var mute: Bool = false
     @AppStorage("processing") var processing: Bool = false
     @AppStorage("showPreview") var showPreview: Bool = true
 
@@ -172,9 +180,7 @@ class CaptureService {
         cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-                if !self.mute {
-                    playSound()
-                }
+//                playSound(for: .text(TextItem(text: "")))
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
                     previewWindow?.orderOut(nil)
@@ -198,9 +204,7 @@ class CaptureService {
         cmdOutput = ""
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-                if !self.mute {
-                    playSound()
-                }
+//                playSound(for: .text(TextItem(text: "")))
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
                     previewWindow?.orderOut(nil)

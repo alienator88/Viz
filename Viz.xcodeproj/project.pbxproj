@@ -19,6 +19,7 @@
 		C7472EA12CD957EB00661FEA /* AlinFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C7472EA02CD957EB00661FEA /* AlinFoundation */; };
 		C76920112BC5EB5E00D23CEC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76920102BC5EB5E00D23CEC /* MainView.swift */; };
 		C783473E2C0E1B1400F4EE76 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783473D2C0E1B1400F4EE76 /* Styles.swift */; };
+		C7C0C0BE2D94D253002140DD /* water.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C7C0C0BD2D94D253002140DD /* water.mp3 */; };
 		C7E780DE2BC700060053B311 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = C7E780DD2BC700060053B311 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		C766D2892C34D0F100F51BB9 /* Builds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Builds; sourceTree = SOURCE_ROOT; };
 		C76920102BC5EB5E00D23CEC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C783473D2C0E1B1400F4EE76 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		C7C0C0BD2D94D253002140DD /* water.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = water.mp3; sourceTree = "<group>"; };
 		C7FD442B2BC5CADF00777BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 				C7174C9C2BC06EE600DBEF75 /* Viz.entitlements */,
 				C7174CAA2BC0A52100DBEF75 /* PreviewWindow.swift */,
 				C7174CAE2BC0C14900DBEF75 /* capture.mp3 */,
+				C7C0C0BD2D94D253002140DD /* water.mp3 */,
 				C7174CB02BC0C6A800DBEF75 /* Utilities.swift */,
 				C783473D2C0E1B1400F4EE76 /* Styles.swift */,
 				C73944B62BC4489C00EE7EBF /* AppState.swift */,
@@ -166,6 +169,7 @@
 			files = (
 				C7174CAF2BC0C14900DBEF75 /* capture.mp3 in Resources */,
 				C7174C982BC06EE600DBEF75 /* Assets.xcassets in Resources */,
+				C7C0C0BE2D94D253002140DD /* water.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
