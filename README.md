@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>2.1
+   <strong>Version: </strong>2.2
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
@@ -36,14 +36,14 @@ Now with a simple color picker as well.
 
 
 ## Preview
-![Screenshot 2025-03-25 at 1 25 53 PM](https://github.com/user-attachments/assets/96079d68-e1d5-4670-a291-58039944d77b)
+![Screenshot 2025-03-28 at 4 01 31 PM](https://github.com/user-attachments/assets/fdf8c000-b892-4632-8404-b985931f418f)
 
 
-### Text Extraction Demo
+### Text Extraction Demo (Old UI)
 https://github.com/alienator88/Viz/assets/6263626/2b809553-0eb1-4a6e-bbb5-8404680067d8
 
 
-### QR/Barcode Extraction Demo
+### QR/Barcode Extraction Demo (Old UI)
 https://github.com/alienator88/Viz/assets/6263626/b88173ce-74ec-4d80-b061-60f32fc7e470
 
 
