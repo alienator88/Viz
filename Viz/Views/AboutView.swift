@@ -83,6 +83,8 @@ struct AboutView: View {
         .ignoresSafeArea(edges: .top)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("bg"))
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
 
     }
 }

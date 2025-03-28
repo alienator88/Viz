@@ -144,5 +144,7 @@ struct SettingsView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color("bg"))
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
     }
 }
