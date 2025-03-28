@@ -172,7 +172,10 @@ struct HistoryView: View {
         .padding(.horizontal)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
-        .background(Color("bg"))
+        .background(Color("bg")
+        )
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
 
     }
 }
