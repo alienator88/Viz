@@ -11,9 +11,7 @@ import AppKit
 import ServiceManagement
 
 
-class RecognizedContent: ObservableObject {
-    @Published var items = [TextItem]()
-}
+
 
 
 
@@ -73,20 +71,9 @@ func processColor() {
         let colorItem = ColorItem(hex: result.hex, rgb: result.rgb)
         let entry = HistoryEntry.color(colorItem)
         HistoryState.shared.historyItems.append(entry)
-        updateOnMain {
-            showColorPreviewWindow()
+        await MainActor.run {
+            showPreviewWindow(contentView: ColorPreviewView())
         }
-    }
-}
-
-func showColorPreviewWindow() {
-    @AppStorage("processing") var processing: Bool = false
-    @AppStorage("showPreview") var showPreview: Bool = true
-
-    colorWindow?.orderOut(nil)
-    colorWindow = nil
-    if showPreview {
-        showColorPreviewWindowBackend()
     }
 }
 
@@ -265,17 +252,6 @@ extension Bundle {
     }
 }
 
-extension Bundle {
-
-    var copyright: String {
-        func string(for key: String) -> String? {
-            object(forInfoDictionaryKey: key) as? String
-        }
-        return string(for: "NSHumanReadableCopyright") ?? "N/A"
-    }
-}
-
-
 
 func replaceContentToken(in command: String, with content: String) -> String {
     return command.replacingOccurrences(of: "[ocr]", with: "\"\(content)\"")
@@ -296,6 +272,3 @@ func executeShellCommand(_ command: String) -> String {
 
     return output
 }
-
-
-

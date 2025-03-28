@@ -7,7 +7,8 @@
 
 import Foundation
 import SwiftUI
-
+import KeyboardShortcuts
+import AlinFoundation
 
 
 struct InfoButton: View {
@@ -17,7 +18,7 @@ struct InfoButton: View {
     let label: String
     let warning: Bool
 
-    init(text: String, color: Color = Color("mode"), label: String = "", warning: Bool = false) {
+    init(text: String, color: Color = .primary, label: String = "", warning: Bool = false) {
         self.text = text
         self.color = color
         self.label = label
@@ -107,11 +108,13 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
     let image: String
     let size: CGFloat
     let color: Color?
+    let shortcut: KeyboardShortcuts.Shortcut?
 
-    init(image: String, size: CGFloat, color: Color? = Color("mode")) {
+    init(image: String, size: CGFloat, color: Color? = .primary, shortcut: KeyboardShortcuts.Shortcut? = nil) {
         self.image = image
         self.size = size
         self.color = color
+        self.shortcut = shortcut
     }
 
     func makeBody(configuration: Configuration) -> some View {
@@ -124,15 +127,22 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
                     .frame(width: size)
                     .foregroundColor(color)
                 configuration.label
+                    .font(.footnote)
+
+                if let shortcut = shortcut {
+                    Text(shortcut.description)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
             }
             Spacer()
         }
         .padding()
-        .background(isHovered ? Color("mode").opacity(0.3) : Color("mode").opacity(0.1))
-        .foregroundColor(Color("mode"))
+        .background(isHovered ? Color.primary.opacity(0.3) : Color.primary.opacity(0.1))
+        .foregroundColor(.primary)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color("mode").opacity(0.2), lineWidth: 1)
+                .strokeBorder(.primary.opacity(0.2), lineWidth: 1)
         )
         .animation(.easeInOut(duration: 0.3), value: isHovered)
         .cornerRadius(10)
@@ -141,8 +151,29 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
             isHovered = inside
         }
     }
-
 }
+
+
+struct ShortcutEditorView: View {
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appState: AppState
+    let name: KeyboardShortcuts.Name
+
+    var body: some View {
+        if let shortcut = KeyboardShortcuts.getShortcut(for: name) {
+            HStack(spacing: 4) {
+                Text(shortcut.description)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .onTapGesture {
+                        WindowManager.shared.open(id: "settings", with: SettingsView().environmentObject(appState), width: 500, height: 630)
+                        dismiss()
+                    }
+            }
+        }
+    }
+}
+
 
 
 struct SpacedToggle: ToggleStyle {
@@ -235,6 +266,32 @@ struct SimpleSearchStyle: TextFieldStyle {
     }
 }
 
+struct TrailingRoundedRectangle: Shape {
+    var cornerRadius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
+        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: .degrees(-90),
+                    endAngle: .degrees(0),
+                    clockwise: false)
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
+        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY - cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: .degrees(0),
+                    endAngle: .degrees(90),
+                    clockwise: false)
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
+
+        return path
+    }
+}
+
 // Hide blinking textfield caret
 extension NSTextView {
     open override var frame: CGRect {
@@ -256,7 +313,7 @@ struct SimpleButtonStyle: ButtonStyle {
     let padding: CGFloat
     let rotate: Bool
 
-    init(icon: String, iconFlip: String = "", label: String = "", help: String, color: Color = Color("mode"), size: CGFloat = 20, padding: CGFloat = 5, rotate: Bool = false) {
+    init(icon: String, iconFlip: String = "", label: String = "", help: String, color: Color = .primary, size: CGFloat = 20, padding: CGFloat = 5, rotate: Bool = false) {
         self.icon = icon
         self.iconFlip = iconFlip
         self.label = label

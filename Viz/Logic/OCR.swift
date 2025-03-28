@@ -14,17 +14,19 @@ import AlinFoundation
 struct TextRecognition {
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("postcommands") var postCommands: String = ""
-    @AppStorage("cmdOutput") var cmdOutput: String = ""
-    @AppStorage("processing") var processing: Bool = false
+    @AppStorage("processing") var processingIsEnabled: Bool = false
 
-    var recognizedContent: RecognizedContent
+    let appState = AppState.shared
+
+    var recognizedContent = RecognizedContent.shared
     var image: NSImage
     var historyState: HistoryState
     var didFinishRecognition: () -> Void
 
+    //MARK: Text Recognition
     func recognizeText() {
-        let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let textItem = TextItem(text: "")
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -32,25 +34,10 @@ struct TextRecognition {
                 try requestHandler.perform([self.getTextRecognitionRequest(with: textItem)])
 
                 DispatchQueue.main.async {
-                    self.updateRecognizedContent(with: textItem)
-                    self.didFinishRecognition()
-
-                    guard textItem.text != "Unable to extract any text from selection" else { return }
-
-                    copyTextItemsToClipboard(textItems: self.recognizedContent.items)
-                    playSound(for: .text(TextItem(text: "")))
-                    historyState.historyItems.append(.text(textItem))
-                    if processing {
-                        cmdOutput = "Running post-processing commands.."
-                        Task(priority: .userInitiated) {
-                            let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
-                            let command = replaceContentToken(in: postCommands, with: combinedText)
-                            cmdOutput = executeShellCommand(command)
-                        }
-                    }
+                    self.processRecognitionResult(textItem: textItem, failureMessage: "Unable to extract any text from selection")
                 }
             } catch {
-                print("Failed to recognize text: \(error.localizedDescription)")
+                printOS("Failed to recognize text: \(error.localizedDescription)")
             }
         }
     }
@@ -81,15 +68,20 @@ struct TextRecognition {
 
         }
 
-        request.recognitionLevel = .accurate
+        request.recognitionLevel = appState.selectedQuality == .fast ? .fast : .accurate
         request.usesLanguageCorrection = true
+        if let langCode = appState.selectedLanguage.code {
+            request.recognitionLanguages = [langCode]
+        }
 
         return request
     }
 
+
+    //MARK: Barcode Recognition
     func recognizeBarcodes() {
-        let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let barcodeItem = TextItem(text: "")
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -97,25 +89,10 @@ struct TextRecognition {
                 try requestHandler.perform([self.getBarcodeRecognitionRequest(with: barcodeItem)])
 
                 DispatchQueue.main.async {
-                    self.updateRecognizedContent(with: barcodeItem)
-                    self.didFinishRecognition()
-
-                    guard barcodeItem.text != "Unable to extract any qr/barcode from selection" else { return }
-
-                    copyTextItemsToClipboard(textItems: self.recognizedContent.items)
-                    playSound(for: .text(TextItem(text: "")))
-                    historyState.historyItems.append(.text(barcodeItem))
-                    if processing {
-                        cmdOutput = "Running post-processing commands.."
-                        Task(priority: .userInitiated) {
-                            let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
-                            let command = replaceContentToken(in: postCommands, with: combinedText)
-                            cmdOutput = executeShellCommand(command)
-                        }
-                    }
+                    self.processRecognitionResult(textItem: barcodeItem, failureMessage: "Unable to extract any qr/barcode from selection")
                 }
             } catch {
-                print("Failed to recognize barcodes: \(error.localizedDescription)")
+                printOS("Failed to recognize barcodes: \(error.localizedDescription)")
             }
         }
     }
@@ -148,7 +125,30 @@ struct TextRecognition {
         return request
     }
 
-    
+    // Helper function
+    private func processRecognitionResult(textItem: TextItem, failureMessage: String) {
+        self.updateRecognizedContent(with: textItem)
+        self.didFinishRecognition()
+
+        guard textItem.text != failureMessage else { return }
+
+        copyTextItemsToClipboard(textItems: self.recognizedContent.items)
+        playSound(for: .text(TextItem(text: "")))
+        historyState.historyItems.append(.text(textItem))
+        if processingIsEnabled {
+            updateOnMain {
+                AppState.shared.cmdOutput = "Running post-processing commands.."
+            }
+            Task(priority: .userInitiated) {
+                let combinedText = self.recognizedContent.items.map { $0.text }.joined(separator: "\n")
+                let command = replaceContentToken(in: postCommands, with: combinedText)
+                let result = executeShellCommand(command)
+                updateOnMain {
+                    AppState.shared.cmdOutput = result
+                }
+            }
+        }
+    }
 
     private func updateRecognizedContent(with textItem: TextItem) {
         if appendRecognizedText {
@@ -166,60 +166,40 @@ struct TextRecognition {
 
 class CaptureService {
     @AppStorage("postcommands") var postCommands: String = ""
-    @AppStorage("cmdOutput") var cmdOutput: String = ""
-//    @AppStorage("mute") var mute: Bool = false
-    @AppStorage("processing") var processing: Bool = false
-    @AppStorage("showPreview") var showPreview: Bool = true
 
     static let shared = CaptureService()
     var screenCaptureUtility = ScreenCaptureUtility()
-    var recognizedContent = RecognizedContent()
+    var recognizedContent = RecognizedContent.shared
     let pasteboard = NSPasteboard.general
 
     func captureText() {
-        cmdOutput = ""
+        updateOnMain {
+            AppState.shared.cmdOutput = ""
+        }
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-//                playSound(for: .text(TextItem(text: "")))
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
-                    previewWindow?.orderOut(nil)
-                    previewWindow = nil
-                    if self.showPreview {
-                        showPreviewWindow(content: self.recognizedContent)
-                    }
-                    if self.processing && self.showPreview {
-                        cmdOutputWindow?.orderOut(nil)
-                        cmdOutputWindow = nil
-                        showOutputWindow()
-                    }
+                    showPreviewWindow(contentView: PreviewContentView())
                 }.recognizeText()
             } else {
-                print("Failed to capture image")
+                printOS("Failed to capture image")
             }
         }
     }
 
     func captureBarcodes() {
-        cmdOutput = ""
+        updateOnMain {
+            AppState.shared.cmdOutput = ""
+        }
         screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
             if let image = capturedImage {
-//                playSound(for: .text(TextItem(text: "")))
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
-                    previewWindow?.orderOut(nil)
-                    previewWindow = nil
-                    if self.showPreview {
-                        showPreviewWindow(content: self.recognizedContent)
-                    }
-                    if self.processing && self.showPreview {
-                        cmdOutputWindow?.orderOut(nil)
-                        cmdOutputWindow = nil
-                        showOutputWindow()
-                    }
+                    showPreviewWindow(contentView: PreviewContentView())
                 }.recognizeBarcodes()
             } else {
-                print("Failed to capture image")
+                printOS("Failed to capture image")
             }
         }
     }

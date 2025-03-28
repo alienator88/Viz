@@ -9,11 +9,40 @@ import Foundation
 import ServiceManagement
 import SwiftUI
 import AlinFoundation
+import Vision
+
+class RecognizedContent: ObservableObject {
+    static let shared = RecognizedContent()
+    @Published var items = [TextItem]()
+}
 
 class AppState: ObservableObject {
     static let shared = AppState()
     @Published var isLaunchAtLoginEnabled: Bool = false
-    @Published var colorSample: ColorItem = ColorItem(hex: "#FFFFFF", rgb: "(255,255,255)")
+    @Published var cmdOutput: String = ""
+    @Published var colorSample: ColorItem = ColorItem(hex: "", rgb: "")
+    @AppStorage("selectedLanguageCode") private var selectedLanguageCode: String = "All"
+    @AppStorage("selectedQuality") private var selectedQualityRaw: String = TextRecognitionQuality.accurate.rawValue
+
+    var selectedLanguage: TextRecognitionLanguage {
+        get {
+            TextRecognitionLanguage.loadSupportedLanguages().first(where: { $0.code == selectedLanguageCode }) ?? TextRecognitionLanguage(id: "All", displayName: "All", code: nil)
+        }
+        set {
+            selectedLanguageCode = newValue.code ?? "All"
+            objectWillChange.send()
+        }
+    }
+
+    var selectedQuality: TextRecognitionQuality {
+        get {
+            TextRecognitionQuality(rawValue: selectedQualityRaw) ?? .accurate
+        }
+        set {
+            selectedQualityRaw = newValue.rawValue
+            objectWillChange.send()
+        }
+    }
 
     init() {
         fetchLaunchAtLoginStatus()
@@ -29,6 +58,41 @@ class AppState: ObservableObject {
         }
     }
 
+}
+
+
+struct TextRecognitionLanguage: Identifiable, Hashable {
+    let id: String
+    let displayName: String
+    let code: String?
+
+    static func loadSupportedLanguages() -> [TextRecognitionLanguage] {
+        var languages: [TextRecognitionLanguage] = [
+            TextRecognitionLanguage(id: "All", displayName: "All", code: nil)
+        ]
+        do {
+            let supported = try VNRecognizeTextRequest().supportedRecognitionLanguages()
+            for code in supported {
+                let name: String
+                if code == "vi-VT" {
+                    name = "Vietnamese (Vietnam)"
+                } else {
+                    name = Locale.current.localizedString(forIdentifier: code) ?? code
+                }
+                languages.append(TextRecognitionLanguage(id: name, displayName: name, code: code))
+            }
+        } catch {
+            printOS("Error loading supported languages: \(error)")
+        }
+        return languages
+    }
+}
+
+enum TextRecognitionQuality: String, CaseIterable, Identifiable {
+    case fast = "Fast"
+    case accurate = "Accurate"
+
+    var id: String { self.rawValue }
 }
 
 class HistoryState: ObservableObject {
@@ -142,5 +206,33 @@ struct ColorItem: Identifiable, Codable {
         self.id = UUID().uuidString
         self.hex = hex
         self.rgb = rgb
+    }
+}
+
+struct LanguagePickerView: View {
+    @ObservedObject var appState = AppState.shared
+    let languages = TextRecognitionLanguage.loadSupportedLanguages()
+
+    var body: some View {
+        Picker("", selection: $appState.selectedLanguage) {
+            ForEach(languages) { language in
+                Text(language.displayName).tag(language)
+            }
+        }
+        .pickerStyle(MenuPickerStyle())
+    }
+}
+
+
+struct QualityPickerView: View {
+    @ObservedObject var appState = AppState.shared
+
+    var body: some View {
+        Picker("", selection: $appState.selectedQuality) {
+            ForEach(TextRecognitionQuality.allCases) { quality in
+                Text(quality.rawValue).tag(quality)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
     }
 }
