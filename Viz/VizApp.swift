@@ -16,7 +16,7 @@ struct VizApp: App {
     @StateObject private var updater = Updater(owner: "alienator88", repo: "Viz")
 
     var body: some Scene {
-        MenuBarExtra("Viz", systemImage: "eye", content: {
+        MenuBarExtra("Viz", systemImage: updater.updateAvailable ? "arrow.down.circle" : "eye", content: {
             ContentView()
                 .environment(\.colorScheme, .dark)
                 .preferredColorScheme(.dark)

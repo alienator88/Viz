@@ -14,15 +14,18 @@ struct SettingsView: View {
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
     @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
     @AppStorage("showPreview") var showPreview: Bool = true
+    @AppStorage("previewSeconds") var seconds: Double = 5.0
     @AppStorage("processing") var processingIsEnabled: Bool = false
-    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("postcommands") var postCommands: String = "say [ocr];"
     @AppStorage("mute") var mute: Bool = false
+    @AppStorage("viewWidth") var viewWidth: Double = 300.0
+    @AppStorage("viewHeight") var viewHeight: Double = 200.0
     @EnvironmentObject var appState: AppState
 
     var body: some View {
         VStack(alignment: .center) {
             GroupBox(label: Text("Settings").font(.title2)) {
-                VStack(alignment: .leading, spacing: 5) {
+                VStack(alignment: .leading, spacing: 10) {
 
                     HStack {
                         Text("OCR Language")
@@ -47,10 +50,10 @@ struct SettingsView: View {
 
                     Toggle("Show capture window for", isOn: $showPreview)
                         .toggleStyle(SpacedToggleSeconds())
-                        .help("When enabled, captured content preview will show and close after [X] seconds. Otherwise it's not shown at all.")
+                        .help("When enabled, captured content preview will show and close after \(seconds) seconds. Otherwise it's not shown at all.")
 
                     Toggle("Post-processing", isOn: $processingIsEnabled)
-                        .toggleStyle(SpacedToggle())
+                        .toggleStyle(SpacedProcessingToggle())
                         .help("When enabled, you can execute shell functions after capture")
 
                     Toggle("Mute capture sound", isOn: $mute)
@@ -67,12 +70,47 @@ struct SettingsView: View {
                         }
                     ))
                     .toggleStyle(SpacedToggle())
+
+                    HStack {
+                        Text("Capture Window Dimensions")
+                            .help("The size of the window that shows the captured content at the top right of the screen")
+                        Spacer()
+                        HStack() {
+                            Text("W:")
+                            Stepper("\(Int(viewWidth))", value: $viewWidth, in: 200...1000, step: 10)
+                                .frame(width: 60, alignment: .trailing)
+                            Text("H:")
+                            Stepper("\(Int(viewHeight))", value: $viewHeight, in: 100...1000, step: 10)
+                                .frame(width: 60, alignment: .trailing)
+                        }
+
+                        Button {
+                            viewWidth = 300.0
+                            viewHeight = 200.0
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
+                        .help("Reset dimensions to default")
+
+                        Button {
+                            showPreviewWindow(contentView: PreviewContentView())
+                        } label: {
+                            Image(systemName: "macwindow")
+                                .font(.system(size: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
+                        .help("Show example window")
+                    }
                 }
                 .padding()
             }
 
             GroupBox(label: Text("Keyboard Shortcuts").font(.title2)) {
-                VStack(spacing: 5) {
+                VStack(spacing: 10) {
                     HStack {
                         Text("Text Capture")
                         Spacer()
@@ -102,38 +140,9 @@ struct SettingsView: View {
                 .padding()
 
             }
-
-            GroupBox(label: {
-                HStack(alignment: .center, spacing: 5) {
-                    Text("Post-Processing")
-                    InfoButton(text: "Execute any shell commands after capture is completed. You may also use the [ocr] token in the commands. Example:\nsay [ocr]; echo [ocr] >> saved.txt")
-                    Spacer()
-                }
-            }().font(.title2)) {
-                HStack(alignment: .center, spacing: 10) {
-                    TextEditor(text: $postCommands)
-                        .frame(height: 50)
-                        .focusable(false)
-                        .font(.title3)
-                        .overlay {
-                            if postCommands.isEmpty {
-                                VStack {
-                                    HStack {
-                                        Text("Example: say [ocr]; echo [ocr] >> file.txt").opacity(0.5)
-                                        Spacer()
-                                    }
-                                    .padding(.leading, 8)
-                                    .padding(.top, 2)
-                                    Spacer()
-                                }
-                                .frame(height: 50)
-                            }
-                        }
-                }
-            }
-            
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(Color("bg"))
     }
 }

@@ -11,7 +11,6 @@
 		C7174C982BC06EE600DBEF75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7174C972BC06EE600DBEF75 /* Assets.xcassets */; };
 		C7174CA32BC06F1200DBEF75 /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CA22BC06F1200DBEF75 /* OCR.swift */; };
 		C7174CAB2BC0A52100DBEF75 /* PreviewWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CAA2BC0A52100DBEF75 /* PreviewWindowView.swift */; };
-		C7174CAF2BC0C14900DBEF75 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C7174CAE2BC0C14900DBEF75 /* capture.mp3 */; };
 		C7174CB12BC0C6A800DBEF75 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CB02BC0C6A800DBEF75 /* Utilities.swift */; };
 		C73944B72BC4489C00EE7EBF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944B62BC4489C00EE7EBF /* AppState.swift */; };
 		C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BB2BC449C800EE7EBF /* AboutView.swift */; };
@@ -31,7 +30,6 @@
 		C7174C972BC06EE600DBEF75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7174CA22BC06F1200DBEF75 /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		C7174CAA2BC0A52100DBEF75 /* PreviewWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWindowView.swift; sourceTree = "<group>"; };
-		C7174CAE2BC0C14900DBEF75 /* capture.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = capture.mp3; sourceTree = "<group>"; };
 		C7174CB02BC0C6A800DBEF75 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C73944B62BC4489C00EE7EBF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		C73944BB2BC449C800EE7EBF /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -86,7 +84,6 @@
 				C74D7C952D95CF2C009A8C48 /* Views */,
 				C74D7C962D95CF84009A8C48 /* Logic */,
 				C7174C972BC06EE600DBEF75 /* Assets.xcassets */,
-				C7174CAE2BC0C14900DBEF75 /* capture.mp3 */,
 				C7C0C0BD2D94D253002140DD /* water.mp3 */,
 				C783473D2C0E1B1400F4EE76 /* Styles.swift */,
 				C74D7C942D95CE55009A8C48 /* announcements.json */,
@@ -183,7 +180,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7174CAF2BC0C14900DBEF75 /* capture.mp3 in Resources */,
 				C7174C982BC06EE600DBEF75 /* Assets.xcassets in Resources */,
 				C7C0C0BE2D94D253002140DD /* water.mp3 in Resources */,
 			);
@@ -342,7 +338,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -360,7 +356,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -379,7 +375,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -397,7 +393,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

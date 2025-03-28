@@ -154,6 +154,8 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
 }
 
 
+
+
 struct ShortcutEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
@@ -163,8 +165,14 @@ struct ShortcutEditorView: View {
         if let shortcut = KeyboardShortcuts.getShortcut(for: name) {
             HStack(spacing: 4) {
                 Text(shortcut.description)
-                    .font(.callout)
+                    .font(.system(size: 10))
                     .foregroundStyle(.secondary)
+                    .padding(4)
+                    .padding(.horizontal, 2)
+                    .background {
+                        Capsule()
+                            .fill(Color.secondary.opacity(0.2))
+                    }
                     .onTapGesture {
                         WindowManager.shared.open(id: "settings", with: SettingsView().environmentObject(appState), width: 500, height: 630)
                         dismiss()
@@ -175,6 +183,31 @@ struct ShortcutEditorView: View {
 }
 
 
+struct PaddedProminentButtonStyle: PrimitiveButtonStyle {
+    var icon: String? = nil
+    var tint: Color? = .blue
+    @State private var isHovered: Bool = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        Button(action: configuration.trigger) {
+            HStack(spacing: 5) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .imageScale(.medium)
+                }
+                configuration.label
+            }
+            .padding(5)
+
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(tint ?? .blue)
+        .onHover { hovering in
+            isHovered = hovering
+        }
+    }
+}
+
 
 struct SpacedToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -183,6 +216,43 @@ struct SpacedToggle: ToggleStyle {
             Spacer() // Adds space between the label and the switch
             Switch(isOn: configuration.$isOn)
                 .labelsHidden() // Hide default labels of the switch to use the custom label
+        }
+    }
+}
+
+struct SpacedProcessingToggle: ToggleStyle {
+    @AppStorage("postcommands") var postCommands: String = "say [ocr];"
+    @State private var showPopover = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack() {
+
+            configuration.label
+
+            Button("Edit") {
+                showPopover.toggle()
+            }
+            .buttonStyle(.borderedProminent)
+            .popover(isPresented: $showPopover) {
+                VStack(alignment: .leading, spacing: 10) {
+                    TextEditor(text: $postCommands)
+                        .monospaced()
+                        .frame(width: 350, height: 100)
+                        .scrollContentBackground(.hidden)
+                    Divider()
+                    Text("Execute any shell commands after capture is completed. You may also use the [ocr] token in the commands.\nExample: say [ocr]; echo [ocr] > capture.txt")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.disabled)
+                }
+                .background(Color("bg").padding(-80))
+                .padding()
+            }
+
+            Spacer()
+
+            Switch(isOn: configuration.$isOn)
+                .labelsHidden()
         }
     }
 }
@@ -227,7 +297,7 @@ struct SimpleSearchStyle: TextFieldStyle {
     @State private var isHovered = false
     @State var trash: Bool = false
     @EnvironmentObject var appState: AppState
-    @AppStorage("postcommands") private var text: String = ""
+    @AppStorage("postcommands") private var text: String = "say [ocr];"
 
     func _body(configuration: TextField<Self._Label>) -> some View {
 

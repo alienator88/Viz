@@ -123,17 +123,19 @@ func showPreviewWindow<Content: View>(contentView: Content) {
     @AppStorage("previewSeconds") var seconds: Double = 5.0
     @AppStorage("processing") var processingIsEnabled: Bool = false
     @AppStorage("showPreview") var showPreview: Bool = true
+    @AppStorage("viewWidth") var viewWidth: Double = 300.0
+    @AppStorage("viewHeight") var viewHeight: Double = 200.0
 
     guard showPreview else { return }
 
     previewWindow?.orderOut(nil)
     previewWindow = nil
 
-    let height: CGFloat = (processingIsEnabled && contentView is PreviewContentView) ? 300 : 200
+    let height: CGFloat = (processingIsEnabled && contentView is PreviewContentView) ? viewHeight + 100 : viewHeight
     let hostingView = NSHostingView(rootView: contentView)
-    hostingView.frame = CGRect(x: 0, y: 0, width: 300, height: height)
+    hostingView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: height)
 
-    previewWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 300, height: height),
+    previewWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: viewWidth, height: height),
                              styleMask: .borderless,
                              backing: .buffered,
                              defer: false)
@@ -147,7 +149,7 @@ func showPreviewWindow<Content: View>(contentView: Content) {
 
     if let screen = NSScreen.main {
         let screenRect = screen.visibleFrame
-        let windowX = screenRect.maxX - 300 - 30
+        let windowX = screenRect.maxX - viewWidth - 30
         let windowY = screenRect.maxY - height - 30
         previewWindow?.setFrameOrigin(NSPoint(x: windowX, y: windowY))
     }

@@ -13,12 +13,6 @@ import AlinFoundation
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var historyState: HistoryState
-    @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
-    @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
-    @AppStorage("showPreview") var showPreview: Bool = true
-    @AppStorage("processing") var processingIsEnabled: Bool = false
-    @AppStorage("postcommands") var postCommands: String = ""
-    @AppStorage("mute") var mute: Bool = false
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var updater: Updater
     @State private var windowController = WindowManager.shared
@@ -26,7 +20,7 @@ struct ContentView: View {
 
     var body: some View {
 
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 0) {
 
             HStack(alignment: .center, spacing: 10) {
 
@@ -41,39 +35,49 @@ struct ContentView: View {
                         )
                     )
                     .shadow(color: .black, radius: 2, x: 0, y: 0)
+                    .padding(.leading, 5)
+
 
                 Spacer()
 
-                Button {
-                    openAbout(updater: updater)
-                    dismiss()
-                } label: {
-                    Image(systemName: updater.updateAvailable ? "arrow.down.circle" : "info.circle")
-                        .font(.title2)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(updater.updateAvailable ? .green : .secondary)
+                HStack() {
+                    Button {
+                        openAbout(updater: updater)
+                        dismiss()
+                    } label: {
+                        Image(systemName: updater.updateAvailable ? "arrow.down.circle" : "info.circle")
+                            .font(.system(size: 18))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(updater.updateAvailable ? .green : .secondary)
 
-                Button {
-                    openSettings(appState: appState)
-                    dismiss()
-                } label: {
-                    Image(systemName: "gear")
-                        .font(.title2)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
+                    Button {
+                        openSettings(appState: appState)
+                        dismiss()
+                    } label: {
+                        Image(systemName: "gear")
+                            .font(.system(size: 17))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
 
-                Button {
-                    NSApp.terminate(nil)
-                } label: {
-                    Image(systemName: "x.circle")
-                        .font(.title2)
+                    Button {
+                        NSApp.terminate(nil)
+                    } label: {
+                        Image(systemName: "x.circle.fill")
+                            .font(.system(size: 18))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
+                .padding(4)
+                .padding(.horizontal, 2)
+                .background {
+                    Capsule()
+                        .fill(Color.secondary.opacity(0.2))
+                }
             }
-
+            .padding(6)
 
 
             HStack(spacing: 5) {
@@ -136,35 +140,12 @@ struct ContentView: View {
                     ShortcutEditorView(name: .clear)
                 }
 
-                //                Button {
-                //                    openAbout(updater: updater)
-                //                    dismiss()
-                //                } label: {
-                //                    Text(updater.updateAvailable ? "New Update" : "About")
-                //                        .foregroundStyle(updater.updateAvailable ? .green : .primary)
-                //                }
-                //                .buttonStyle(RoundedRectangleButtonStyle(image: updater.updateAvailable ? "arrow.down.circle" : "info.circle", size: 15, color: updater.updateAvailable ? .green : .primary))
-                //
-                //                Button {
-                //                    openSettings(appState: appState)
-                //                    dismiss()
-                //                } label: {
-                //                    Text("Settings")
-                //                }
-                //                .buttonStyle(RoundedRectangleButtonStyle(image: "gear", size: 15))
-                //
-                //
-                //                Button("Quit") {
-                //                    NSApp.terminate(nil)
-                //                }
-                //                .buttonStyle(RoundedRectangleButtonStyle(image: "x.circle", size: 15))
-
             }
+            .padding([.horizontal, .bottom, .top])
 
 
         }
-        .padding()
         .background(Color("bg"))
-        .frame(width: 600, height: 150)
+        .frame(width: 600)
     }
 }

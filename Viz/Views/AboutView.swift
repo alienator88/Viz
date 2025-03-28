@@ -10,9 +10,8 @@ struct AboutView: View {
 
             HStack {
                 Spacer()
-                if !updater.updateAvailable {
+                if updater.updateAvailable {
                     UpdateBadge(updater: updater, hideLabel: true)
-//                        .frame(width: 200)
                         .padding()
                 } else {
                     HStack {
@@ -21,6 +20,7 @@ struct AboutView: View {
                         Button("Refresh") {
                             updater.checkForUpdates(sheet: false)
                         }
+                        .buttonStyle(PaddedProminentButtonStyle(icon: "arrow.counterclockwise", tint: .green))
                     }
                     .padding()
 
@@ -82,5 +82,7 @@ struct AboutView: View {
         }
         .ignoresSafeArea(edges: .top)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color("bg"))
+
     }
 }

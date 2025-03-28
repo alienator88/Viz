@@ -13,7 +13,7 @@ import AlinFoundation
 
 struct TextRecognition {
     @AppStorage("appendRecognizedText") var appendRecognizedText: Bool = false
-    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("postcommands") var postCommands: String = "say [ocr];"
     @AppStorage("processing") var processingIsEnabled: Bool = false
 
     let appState = AppState.shared
@@ -165,7 +165,7 @@ struct TextRecognition {
 
 
 class CaptureService {
-    @AppStorage("postcommands") var postCommands: String = ""
+    @AppStorage("postcommands") var postCommands: String = "say [ocr];"
 
     static let shared = CaptureService()
     var screenCaptureUtility = ScreenCaptureUtility()
