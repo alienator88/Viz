@@ -87,9 +87,24 @@ struct HistoryView: View {
                                 case .text(let textItem):
                                     HStack {
                                         HStack(alignment: .center, spacing: 0) {
+                                            let trimmed = textItem.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            if isRecognizedURLFormat(trimmed),
+                                               let url = URL(string: trimmed.hasPrefix("http") ? trimmed : "https://\(trimmed)") {
+                                                Button {
+                                                    NSWorkspace.shared.open(url)
+                                                } label: {
+                                                    Image(systemName: "safari")
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 14, height: 14)
+                                                        .foregroundColor(.blue)
+                                                        .padding(.trailing)
+                                                }
+                                                .buttonStyle(.plain)
+                                            }
                                             Text(textItem.text)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding()
                                         .background {
                                             RoundedRectangle(cornerRadius: 8)
@@ -178,4 +193,10 @@ struct HistoryView: View {
         .preferredColorScheme(.dark)
 
     }
+}
+
+// Helper function for recognized URL formats
+func isRecognizedURLFormat(_ text: String) -> Bool {
+    let pattern = #"^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}.*$"#
+    return text.range(of: pattern, options: .regularExpression) != nil
 }
