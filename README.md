@@ -4,7 +4,7 @@
    <br />
    <strong>Status: </strong>Maintained 
    <br />
-   <strong>Version: </strong>2.2
+   <strong>Version: </strong>2.2.1
    <br />
    <a href="https://github.com/alienator88/Viz/releases"><strong>Download</strong></a>
     · 
