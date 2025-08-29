@@ -41,25 +41,16 @@ struct ContentView: View {
                 Spacer()
 
                 HStack() {
-                    Button {
-                        openAbout(updater: updater)
-                        dismiss()
-                    } label: {
-                        Image(systemName: updater.updateAvailable ? "arrow.down.circle" : "info.circle")
-                            .font(.system(size: 18))
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(updater.updateAvailable ? .green : .secondary)
 
                     Button {
-                        openAppSettings()
+                        openAppSettings(selectedTab: updater.updateAvailable ? 2 : 0)
                         dismiss()
                     } label: {
-                        Image(systemName: "gear")
+                        Image(systemName: updater.updateAvailable ? "arrow.down.circle" : "gear")
                             .font(.system(size: 17))
                     }
                     .buttonStyle(.plain)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(updater.updateAvailable ? .green : .secondary)
 
                     Button {
                         NSApp.terminate(nil)

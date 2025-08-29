@@ -2,44 +2,10 @@ import SwiftUI
 import AlinFoundation
 
 struct AboutView: View {
-    @EnvironmentObject var updater: Updater
 
     var body: some View {
 
         VStack(spacing: 0) {
-
-            HStack {
-                Spacer()
-                if updater.updateAvailable {
-                    UpdateBadge(updater: updater, hideLabel: true)
-                        .padding()
-                } else {
-                    HStack {
-                        Text("No updates available")
-                            .foregroundStyle(.secondary)
-                        Button("Refresh") {
-                            updater.checkForUpdates(sheet: false)
-                        }
-                        .buttonStyle(PaddedProminentButtonStyle(icon: "arrow.counterclockwise", tint: .green))
-                    }
-                    .padding()
-
-                }
-            }
-
-            Spacer()
-
-            FrequencyView(updater: updater)
-                .frame(width: 250)
-                .padding()
-                .background {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.secondary.opacity(0.1))
-                    //                        .strokeBorder(.secondary.opacity(0.5), lineWidth: 1)
-                }
-
-
-
 
             Image(nsImage: NSApp.applicationIconImage ?? NSImage())
                 .padding()

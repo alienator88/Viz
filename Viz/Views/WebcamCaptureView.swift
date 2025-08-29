@@ -159,6 +159,7 @@ struct WebcamCaptureView: View {
     @State private var isDragging: Bool = false
     @State private var dragStart: CGPoint = .zero
     @State private var viewSize: CGSize = .zero
+    @State private var permissionDenied: Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var selectedWebcam: WebcamDevice? {
@@ -258,12 +259,35 @@ struct WebcamCaptureView: View {
                     .fill(Color.black)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .overlay {
-                        VStack(spacing: 10) {
-                            Image(systemName: "camera.fill")
-                                .font(.system(size: 60))
-                                .foregroundStyle(.gray)
-                            Text("Starting Camera")
-                                .foregroundStyle(.gray)
+                        VStack(spacing: 15) {
+                            if permissionDenied {
+                                Image(systemName: "camera.fill")
+                                    .font(.system(size: 60))
+                                    .foregroundStyle(.red)
+                                Text("Camera access denied")
+                                    .foregroundStyle(.red)
+                                    .font(.headline)
+                                
+                                Button {
+                                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Camera")!)
+                                } label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "gear")
+                                            .font(.system(size: 14))
+                                        Text("Open Settings")
+                                    }
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
+                                }
+                                .buttonStyle(.plain)
+                            } else {
+                                Image(systemName: "camera.fill")
+                                    .font(.system(size: 60))
+                                    .foregroundStyle(.gray)
+                                Text("Starting Camera")
+                                    .foregroundStyle(.gray)
+                            }
                         }
                     }
             }
@@ -333,15 +357,10 @@ struct WebcamCaptureView: View {
                         
                         HStack(spacing: 15) {
                             Button {
-                                // Auto process entire image
+                                // Auto process entire image - stay on current screen
                                 TextRecognition(recognizedContent: RecognizedContent.shared, image: captureManager.capturedImage!, historyState: HistoryState.shared) {
                                     showPreviewWindow(contentView: PreviewContentView())
                                 }.recognizeContent()
-                                
-                                captureManager.clearCapturedImage()
-                                Task {
-                                    previewLayer = await captureManager.setUpCaptureSession()
-                                }
                             } label: {
                                 HStack(spacing: 8) {
                                     Image(systemName: "wand.and.stars")
@@ -435,7 +454,18 @@ struct WebcamCaptureView: View {
                 selectedWebcamID = webcamManager.defaultDevice?.id ?? ""
             }
             Task {
-                previewLayer = await captureManager.setUpCaptureSession()
+                // Check and request permission in background
+                let authorized = await captureManager.isAuthorized
+                if !authorized {
+                    await MainActor.run {
+                        permissionDenied = true
+                    }
+                } else {
+                    await MainActor.run {
+                        permissionDenied = false
+                    }
+                    previewLayer = await captureManager.setUpCaptureSession()
+                }
             }
         }
         .onDisappear {
@@ -518,6 +548,59 @@ struct WebcamCaptureView: View {
         guard let croppedCGImage = cgImage.cropping(to: cropRect) else { return nil }
         
         return NSImage(cgImage: croppedCGImage, size: NSSize(width: croppedCGImage.width, height: croppedCGImage.height))
+    }
+}
+
+struct WebcamDevice: Identifiable, Equatable, Hashable {
+    let id: String
+    let name: String
+}
+
+class WebcamManager: ObservableObject {
+    @Published var availableDevices: [WebcamDevice] = []
+    @Published var defaultDevice: WebcamDevice?
+    
+    init() {
+        loadAvailableDevices()
+    }
+    
+    func loadAvailableDevices() {
+        let discoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera, .externalUnknown],
+            mediaType: .video,
+            position: .unspecified
+        )
+        
+        var devices: [WebcamDevice] = []
+        var builtInDevice: WebcamDevice?
+        
+        for device in discoverySession.devices {
+            let webcamDevice = WebcamDevice(id: device.uniqueID, name: device.localizedName)
+            devices.append(webcamDevice)
+            
+            if device.deviceType == .builtInWideAngleCamera {
+                builtInDevice = webcamDevice
+            }
+        }
+        
+        self.availableDevices = devices
+        self.defaultDevice = builtInDevice ?? devices.first
+    }
+}
+
+struct CameraPreviewView: NSViewRepresentable {
+    let previewLayer: AVCaptureVideoPreviewLayer
+    
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        view.layer = previewLayer
+        view.wantsLayer = true
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSView, context: Context) {
+        nsView.layer = previewLayer
+        previewLayer.frame = nsView.bounds
     }
 }
 

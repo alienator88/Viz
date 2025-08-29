@@ -30,6 +30,7 @@ struct VizApp: App {
             SettingsView()
                 .environmentObject(appState)
                 .environmentObject(HistoryState.shared)
+                .environmentObject(updater)
                 .toolbarBackground(.clear)
                 .movableByWindowBackground()
         }
