@@ -174,7 +174,7 @@ struct ShortcutEditorView: View {
                             .fill(Color.secondary.opacity(0.2))
                     }
                     .onTapGesture {
-                        WindowManager.shared.open(id: "settings", with: SettingsView().environmentObject(appState), width: 500, height: 630)
+                        openAppSettings()
                         dismiss()
                     }
             }

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Viz needs camera access to capture images for OCR text extraction and barcode scanning.</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.com.alienator88.Viz</key>

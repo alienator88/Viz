@@ -25,6 +25,14 @@ struct VizApp: App {
                 .environmentObject(HistoryState.shared)
         })
         .menuBarExtraStyle(.window)
+        
+        Settings {
+            SettingsView()
+                .environmentObject(appState)
+                .environmentObject(HistoryState.shared)
+                .toolbarBackground(.clear)
+                .movableByWindowBackground()
+        }
     }
 }
 
@@ -35,12 +43,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
 
-        KeyboardShortcuts.onKeyUp(for: .captureText) {
-            CaptureService.shared.captureText()
-        }
+        openAppSettings()
 
-        KeyboardShortcuts.onKeyUp(for: .captureBarcode) {
-            CaptureService.shared.captureBarcodes()
+        KeyboardShortcuts.onKeyUp(for: .captureContent) {
+            CaptureService.shared.captureContent()
+            
         }
 
         KeyboardShortcuts.onKeyUp(for: .eyedropper) {
@@ -66,21 +73,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 extension KeyboardShortcuts.Name {
-    static let captureText = Self("captureText", default: .init(.one, modifiers: [.command, .control]))
+    static let captureContent = Self("captureContent", default: .init(.one, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let captureBarcode = Self("captureBarcode", default: .init(.two, modifiers: [.command, .control]))
+    static let eyedropper = Self("eyedropper", default: .init(.two, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let eyedropper = Self("eyedropper", default: .init(.three, modifiers: [.command, .control]))
+    static let history = Self("history", default: .init(.three, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let history = Self("history", default: .init(.four, modifiers: [.command, .control]))
-}
-
-extension KeyboardShortcuts.Name {
-    static let clear = Self("clear", default: .init(.five, modifiers: [.command, .control]))
+    static let clear = Self("clear", default: .init(.four, modifiers: [.command, .control]))
 }

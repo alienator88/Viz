@@ -23,21 +23,30 @@ struct TextRecognition {
     var historyState: HistoryState
     var didFinishRecognition: () -> Void
 
-    //MARK: Text Recognition
-    func recognizeText() {
+    //MARK: Universal Recognition
+    func recognizeContent() {
         guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let textItem = TextItem(text: "")
+        let barcodeItem = TextItem(text: "")
 
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                try requestHandler.perform([self.getTextRecognitionRequest(with: textItem)])
+                let textRequest = self.getTextRecognitionRequest(with: textItem)
+                let barcodeRequest = self.getBarcodeRecognitionRequest(with: barcodeItem)
+                
+                try requestHandler.perform([textRequest, barcodeRequest])
 
                 DispatchQueue.main.async {
-                    self.processRecognitionResult(textItem: textItem, failureMessage: "Unable to extract any text from selection")
+                    let combinedText = [textItem.text, barcodeItem.text]
+                        .filter { !$0.isEmpty && !$0.hasPrefix("Unable to extract") }
+                        .joined(separator: "\n")
+                    
+                    let finalItem = TextItem(text: combinedText.isEmpty ? "Unable to extract any content from selection" : combinedText)
+                    self.processRecognitionResult(textItem: finalItem, failureMessage: "Unable to extract any content from selection")
                 }
             } catch {
-                printOS("Failed to recognize text: \(error.localizedDescription)")
+                printOS("Failed to recognize content: \(error.localizedDescription)")
             }
         }
     }
@@ -58,11 +67,9 @@ struct TextRecognition {
                 }
             }
 
-            // Check if textItem.text is empty, set to "Nothing captured" if it is
             if textItem.text.isEmpty {
                 textItem.text = "Unable to extract any text from selection"
             } else if keepLineBreaks {
-                // Remove the last newline if keepLineBreaks is true
                 textItem.text = textItem.text.trimmingCharacters(in: .whitespacesAndNewlines)
             }
 
@@ -75,26 +82,6 @@ struct TextRecognition {
         }
 
         return request
-    }
-
-
-    //MARK: Barcode Recognition
-    func recognizeBarcodes() {
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        let barcodeItem = TextItem(text: "")
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try requestHandler.perform([self.getBarcodeRecognitionRequest(with: barcodeItem)])
-
-                DispatchQueue.main.async {
-                    self.processRecognitionResult(textItem: barcodeItem, failureMessage: "Unable to extract any qr/barcode from selection")
-                }
-            } catch {
-                printOS("Failed to recognize barcodes: \(error.localizedDescription)")
-            }
-        }
     }
 
     private func getBarcodeRecognitionRequest(with textItem: TextItem) -> VNDetectBarcodesRequest {
@@ -113,17 +100,16 @@ struct TextRecognition {
                 }
             }
 
-            // Check if textItem.text is empty, set to "Nothing captured" if it is
             if textItem.text.isEmpty {
                 textItem.text = "Unable to extract any qr/barcode from selection"
             } else if keepLineBreaks {
-                // Remove the last newline if keepLineBreaks is true
                 textItem.text = textItem.text.trimmingCharacters(in: .whitespacesAndNewlines)
             }
         }
 
         return request
     }
+
 
     // Helper function
     private func processRecognitionResult(textItem: TextItem, failureMessage: String) {
@@ -172,7 +158,7 @@ class CaptureService {
     var recognizedContent = RecognizedContent.shared
     let pasteboard = NSPasteboard.general
 
-    func captureText() {
+    func captureContent() {
         updateOnMain {
             AppState.shared.cmdOutput = ""
         }
@@ -181,27 +167,12 @@ class CaptureService {
 
                 TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
                     showPreviewWindow(contentView: PreviewContentView())
-                }.recognizeText()
+                }.recognizeContent()
             } else {
                 printOS("Failed to capture image")
             }
         }
     }
 
-    func captureBarcodes() {
-        updateOnMain {
-            AppState.shared.cmdOutput = ""
-        }
-        screenCaptureUtility.captureScreenSelectionToClipboard { capturedImage in
-            if let image = capturedImage {
-
-                TextRecognition(recognizedContent: self.recognizedContent, image: image, historyState: HistoryState.shared) {
-                    showPreviewWindow(contentView: PreviewContentView())
-                }.recognizeBarcodes()
-            } else {
-                printOS("Failed to capture image")
-            }
-        }
-    }
 
 }

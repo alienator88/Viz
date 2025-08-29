@@ -16,6 +16,11 @@ func openAbout(updater: Updater) {
     WindowManager.shared.open(id: "about", with: AboutView().environmentObject(updater), width: 400, height: 450)
 }
 
-func openSettings(appState: AppState) {
-    WindowManager.shared.open(id: "settings", with: SettingsView().environmentObject(appState), width: 550, height: 620)
+func openAppSettings() {
+    if #available(macOS 14.0, *) {
+        @Environment(\.openSettings) var openSettings
+        openSettings()
+    } else {
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
 }

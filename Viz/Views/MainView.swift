@@ -52,7 +52,7 @@ struct ContentView: View {
                     .foregroundStyle(updater.updateAvailable ? .green : .secondary)
 
                     Button {
-                        openSettings(appState: appState)
+                        openAppSettings()
                         dismiss()
                     } label: {
                         Image(systemName: "gear")
@@ -82,27 +82,14 @@ struct ContentView: View {
 
             HStack(spacing: 5) {
                 VStack {
-                    Button("Text") {
-                        CaptureService.shared.captureText()
+                    Button("Capture") {
+                        CaptureService.shared.captureContent()
                         dismiss()
                     }
-                    .help("Capture section of screen to extract text from")
-                    .buttonStyle(RoundedRectangleButtonStyle(image: "text.viewfinder", size: 15))
+                    .help("Capture section of screen to extract text and barcodes")
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "viewfinder", size: 15))
 
-                    ShortcutEditorView(name: .captureText)
-
-                }
-
-
-                VStack(alignment: .center) {
-                    Button("Barcode") {
-                        CaptureService.shared.captureBarcodes()
-                        dismiss()
-                    }
-                    .help("Capture QR Code or Barcode to extract text from")
-                    .buttonStyle(RoundedRectangleButtonStyle(image: "qrcode.viewfinder", size: 15))
-
-                    ShortcutEditorView(name: .captureBarcode)
+                    ShortcutEditorView(name: .captureContent)
 
                 }
 

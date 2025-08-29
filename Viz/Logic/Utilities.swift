@@ -99,6 +99,31 @@ extension NSColor {
     }
 }
 
+extension View {
+    // Helper function to apply the movable background window
+    func movableByWindowBackground() -> some View {
+        self.background(MovableWindowAccessor())
+    }
+}
+
+// Custom NSWindow accessor to modify window properties
+struct MovableWindowAccessor: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        let nsView = NSView()
+
+        DispatchQueue.main.async {
+            if let window = nsView.window {
+                // Enable dragging by the window's background
+                window.isMovableByWindowBackground = true
+            }
+        }
+
+        return nsView
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
 
 func playSound(for entry: HistoryEntry) {
     @AppStorage("mute") var mute: Bool = false
