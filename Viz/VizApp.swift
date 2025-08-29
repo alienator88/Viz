@@ -43,11 +43,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
 
-        openAppSettings()
-
         KeyboardShortcuts.onKeyUp(for: .captureContent) {
             CaptureService.shared.captureContent()
-            
+        }
+
+        KeyboardShortcuts.onKeyUp(for: .captureWebcam) {
+            self.dismiss()
+            openWebcamCapture()
         }
 
         KeyboardShortcuts.onKeyUp(for: .eyedropper) {
@@ -77,13 +79,17 @@ extension KeyboardShortcuts.Name {
 }
 
 extension KeyboardShortcuts.Name {
-    static let eyedropper = Self("eyedropper", default: .init(.two, modifiers: [.command, .control]))
+    static let captureWebcam = Self("captureWebcam", default: .init(.two, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let history = Self("history", default: .init(.three, modifiers: [.command, .control]))
+    static let eyedropper = Self("eyedropper", default: .init(.three, modifiers: [.command, .control]))
 }
 
 extension KeyboardShortcuts.Name {
-    static let clear = Self("clear", default: .init(.four, modifiers: [.command, .control]))
+    static let history = Self("history", default: .init(.four, modifiers: [.command, .control]))
+}
+
+extension KeyboardShortcuts.Name {
+    static let clear = Self("clear", default: .init(.five, modifiers: [.command, .control]))
 }

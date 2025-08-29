@@ -27,18 +27,22 @@ struct TextRecognition {
     func recognizeContent() {
         guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        let textItem = TextItem(text: "")
-        let barcodeItem = TextItem(text: "")
+        var recognizedText = ""
+        var recognizedBarcodes = ""
 
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                let textRequest = self.getTextRecognitionRequest(with: textItem)
-                let barcodeRequest = self.getBarcodeRecognitionRequest(with: barcodeItem)
+                let textRequest = self.getTextRecognitionRequest { text in
+                    recognizedText = text
+                }
+                let barcodeRequest = self.getBarcodeRecognitionRequest { barcodes in
+                    recognizedBarcodes = barcodes
+                }
                 
                 try requestHandler.perform([textRequest, barcodeRequest])
 
                 DispatchQueue.main.async {
-                    let combinedText = [textItem.text, barcodeItem.text]
+                    let combinedText = [recognizedText, recognizedBarcodes]
                         .filter { !$0.isEmpty && !$0.hasPrefix("Unable to extract") }
                         .joined(separator: "\n")
                     
@@ -51,28 +55,33 @@ struct TextRecognition {
         }
     }
 
-    private func getTextRecognitionRequest(with textItem: TextItem) -> VNRecognizeTextRequest {
+    private func getTextRecognitionRequest(completion: @escaping (String) -> Void) -> VNRecognizeTextRequest {
         @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
 
         let request = VNRecognizeTextRequest { request, error in
-            guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { 
+                completion("Unable to extract any text from selection")
+                return 
+            }
 
+            var recognizedText = ""
             for observation in observations {
-                guard let recognizedText = observation.topCandidates(1).first else { continue }
-                textItem.text += recognizedText.string
+                guard let text = observation.topCandidates(1).first else { continue }
+                recognizedText += text.string
                 if keepLineBreaks {
-                    textItem.text += "\n"
+                    recognizedText += "\n"
                 } else {
-                    textItem.text += " "
+                    recognizedText += " "
                 }
             }
 
-            if textItem.text.isEmpty {
-                textItem.text = "Unable to extract any text from selection"
+            if recognizedText.isEmpty {
+                completion("Unable to extract any text from selection")
             } else if keepLineBreaks {
-                textItem.text = textItem.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                completion(recognizedText.trimmingCharacters(in: .whitespacesAndNewlines))
+            } else {
+                completion(recognizedText)
             }
-
         }
 
         request.recognitionLevel = appState.selectedQuality == .fast ? .fast : .accurate
@@ -84,26 +93,32 @@ struct TextRecognition {
         return request
     }
 
-    private func getBarcodeRecognitionRequest(with textItem: TextItem) -> VNDetectBarcodesRequest {
+    private func getBarcodeRecognitionRequest(completion: @escaping (String) -> Void) -> VNDetectBarcodesRequest {
         @AppStorage("keepLineBreaks") var keepLineBreaks: Bool = true
 
         let request = VNDetectBarcodesRequest { request, error in
-            guard let observations = request.results as? [VNBarcodeObservation] else { return }
+            guard let observations = request.results as? [VNBarcodeObservation] else { 
+                completion("Unable to extract any qr/barcode from selection")
+                return 
+            }
 
+            var barcodeText = ""
             for observation in observations {
                 let barcodeValue = observation.payloadStringValue ?? "Unknown value"
-                textItem.text += barcodeValue
+                barcodeText += barcodeValue
                 if keepLineBreaks {
-                    textItem.text += "\n"
+                    barcodeText += "\n"
                 } else {
-                    textItem.text += " "
+                    barcodeText += " "
                 }
             }
 
-            if textItem.text.isEmpty {
-                textItem.text = "Unable to extract any qr/barcode from selection"
+            if barcodeText.isEmpty {
+                completion("Unable to extract any qr/barcode from selection")
             } else if keepLineBreaks {
-                textItem.text = textItem.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                completion(barcodeText.trimmingCharacters(in: .whitespacesAndNewlines))
+            } else {
+                completion(barcodeText)
             }
         }
 

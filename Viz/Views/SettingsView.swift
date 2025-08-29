@@ -50,19 +50,12 @@ struct SettingsView: View {
             }
             .tag(1)
             
-            ReverseImageSearchView()
-            .tabItem {
-                Image(systemName: "magnifyingglass")
-                Text("Image Search")
-            }
-            .tag(2)
-            
             WebcamSettingsView()
             .tabItem {
                 Image(systemName: "camera")
                 Text("Webcam")
             }
-            .tag(3)
+            .tag(2)
         }
         .frame(maxWidth: 500, maxHeight: .infinity)
         .background(Color("bg"))
@@ -186,6 +179,11 @@ struct ShortcutsSettingsView: View {
                         KeyboardShortcuts.Recorder(for: .captureContent)
                     }
                     HStack {
+                        Text("Capture Webcam")
+                        Spacer()
+                        KeyboardShortcuts.Recorder(for: .captureWebcam)
+                    }
+                    HStack {
                         Text("Color Picker")
                         Spacer()
                         KeyboardShortcuts.Recorder(for: .eyedropper)
@@ -209,21 +207,6 @@ struct ShortcutsSettingsView: View {
     }
 }
 
-struct ReverseImageSearchView: View {
-    var body: some View {
-        VStack(alignment: .center) {
-            GroupBox {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Reverse image search features will be added here")
-                        .foregroundStyle(.secondary)
-                }
-                .padding()
-            }
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-    }
-}
 
 struct WebcamDevice: Identifiable, Equatable, Hashable {
     let id: String

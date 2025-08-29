@@ -95,6 +95,18 @@ struct ContentView: View {
 
 
                 VStack {
+                    Button("Webcam") {
+                        dismiss()
+                        openWebcamCapture()
+                    }
+                    .help("Open webcam capture window for OCR")
+                    .buttonStyle(RoundedRectangleButtonStyle(image: "camera", size: 15))
+
+                    ShortcutEditorView(name: .captureWebcam)
+
+                }
+
+                VStack {
                     Button("Color") {
                         dismiss()
                         processColor()
