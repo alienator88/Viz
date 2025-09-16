@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AVFoundation
+@preconcurrency import AVFoundation
 import AlinFoundation
 
 class WebcamCaptureManager: ObservableObject {
@@ -80,11 +80,15 @@ class WebcamCaptureManager: ObservableObject {
             
             session.startRunning()
             
-            await MainActor.run {
-                self.captureSession = session
+            await MainActor.run { [captureSession = session, videoOutput = videoOutput] in
+                self.captureSession = captureSession
                 self.videoOutput = videoOutput
-                self.previewLayer = layer
                 self.isPreviewActive = true
+            }
+
+            // Use Task.detached to avoid Sendable capture issues
+            Task { @MainActor in
+                self.previewLayer = layer
             }
             
             return layer

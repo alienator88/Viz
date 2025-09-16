@@ -46,7 +46,7 @@ struct AboutView: View {
             .padding()
 
         }
-        .ignoresSafeArea(edges: .top)
+//        .ignoresSafeArea(edges: .top)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("bg"))
         .environment(\.colorScheme, .dark)

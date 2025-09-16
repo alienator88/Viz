@@ -12,6 +12,7 @@
 		C7174CA32BC06F1200DBEF75 /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CA22BC06F1200DBEF75 /* OCR.swift */; };
 		C7174CAB2BC0A52100DBEF75 /* PreviewWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CAA2BC0A52100DBEF75 /* PreviewWindowView.swift */; };
 		C7174CB12BC0C6A800DBEF75 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7174CB02BC0C6A800DBEF75 /* Utilities.swift */; };
+		C7374B692E79CD090015DEED /* Viz.icon in Resources */ = {isa = PBXBuildFile; fileRef = C7374B682E79CD090015DEED /* Viz.icon */; };
 		C73944B72BC4489C00EE7EBF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944B62BC4489C00EE7EBF /* AppState.swift */; };
 		C73944BD2BC449C800EE7EBF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73944BB2BC449C800EE7EBF /* AboutView.swift */; };
 		C7472EA12CD957EB00661FEA /* AlinFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C7472EA02CD957EB00661FEA /* AlinFoundation */; };
@@ -33,6 +34,7 @@
 		C7174CA22BC06F1200DBEF75 /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		C7174CAA2BC0A52100DBEF75 /* PreviewWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWindowView.swift; sourceTree = "<group>"; };
 		C7174CB02BC0C6A800DBEF75 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		C7374B682E79CD090015DEED /* Viz.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Viz.icon; sourceTree = "<group>"; };
 		C73944B62BC4489C00EE7EBF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		C73944BB2BC449C800EE7EBF /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		C74D7C942D95CE55009A8C48 /* announcements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = announcements.json; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				C74D7C952D95CF2C009A8C48 /* Views */,
 				C74D7C962D95CF84009A8C48 /* Logic */,
 				C7174C972BC06EE600DBEF75 /* Assets.xcassets */,
+				C7374B682E79CD090015DEED /* Viz.icon */,
 				C7C0C0BD2D94D253002140DD /* water.mp3 */,
 				C783473D2C0E1B1400F4EE76 /* Styles.swift */,
 				C74D7C942D95CE55009A8C48 /* announcements.json */,
@@ -152,7 +155,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					C7174C8F2BC06EE500DBEF75 = {
 						CreatedOnToolsVersion = 15.3;
@@ -186,6 +189,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7374B692E79CD090015DEED /* Viz.icon in Resources */,
 				C7174C982BC06EE600DBEF75 /* Assets.xcassets in Resources */,
 				C7C0C0BE2D94D253002140DD /* water.mp3 in Resources */,
 			);
@@ -276,6 +280,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -333,6 +338,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -340,17 +346,18 @@
 		C7174CA02BC06EE600DBEF75 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Viz;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = BK8443AXLU;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -364,7 +371,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -377,17 +384,18 @@
 		C7174CA12BC06EE600DBEF75 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Viz;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Viz/Viz.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = BK8443AXLU;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -401,7 +409,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alienator88.Viz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

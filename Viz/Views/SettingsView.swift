@@ -58,6 +58,13 @@ struct SettingsView: View {
                 Text("Updates")
             }
             .tag(2)
+
+            AboutView()
+                .tabItem {
+                    Image(systemName: "info.circle")
+                    Text("About")
+                }
+                .tag(3)
         }
         .frame(maxWidth: 500, maxHeight: .infinity)
         .background(Color("bg"))
