@@ -18,6 +18,7 @@ class WebcamCaptureManager: ObservableObject {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var lastSampleBuffer: CMSampleBuffer?
     private var videoDelegate: VideoSampleDelegate?
+    private var shouldBeRunning: Bool = false
 
     var isAuthorized: Bool {
         get async {
@@ -39,6 +40,11 @@ class WebcamCaptureManager: ObservableObject {
         guard await isAuthorized else { return nil }
 
         await stopSession()
+
+        // Mark that we want the session to be running
+        await MainActor.run {
+            self.shouldBeRunning = true
+        }
 
         let selectedWebcamID = UserDefaults.standard.string(forKey: "selectedWebcamID") ?? ""
         let device: AVCaptureDevice?
@@ -79,6 +85,14 @@ class WebcamCaptureManager: ObservableObject {
             layer.videoGravity = .resizeAspectFill
 
             session.startRunning()
+
+            // Check if we should still be running (window might have closed during setup)
+            let stillShouldRun = await MainActor.run { self.shouldBeRunning }
+            if !stillShouldRun {
+                // Window was closed during setup, stop immediately
+                session.stopRunning()
+                return nil
+            }
 
             await MainActor.run { [captureSession = session, videoOutput = videoOutput] in
                 self.captureSession = captureSession
@@ -131,6 +145,7 @@ class WebcamCaptureManager: ObservableObject {
 
     func stopSession() async {
         await MainActor.run {
+            shouldBeRunning = false
             captureSession?.stopRunning()
             captureSession = nil
             videoOutput = nil

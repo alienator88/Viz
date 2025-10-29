@@ -164,6 +164,7 @@ struct HistoryView: View {
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 150)
+                .padding(.leading)
 
                 Spacer()
 
