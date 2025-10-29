@@ -7,7 +7,7 @@
       "location" : "https://github.com/alienator88/AlinFoundation",
       "state" : {
         "branch" : "main",
-        "revision" : "9eefa4807a527eafd64058fa820e202c56d46084"
+        "revision" : "f61241c2ea1856ef41cbfc965afe9d756121456f"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
       "state" : {
-        "revision" : "045cf174010beb335fa1d2567d18c057b8787165",
-        "version" : "2.3.0"
+        "revision" : "1aef85578fdd4f9eaeeb8d53b7b4fc31bf08fe27",
+        "version" : "2.4.0"
       }
     }
   ],
