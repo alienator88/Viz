@@ -1,8 +1,23 @@
 # Viz
+
+### Project Status: On Hold
+> As you may have noticed, development on the app has basically stopped since end of 2025, so I wanted to provide some context.
+>
+> Between a new job, joining a friend who is building a SaaS company, and other life priorities, I no longer have the time needed to actively maintain or continue development on the project.
+>
+> Another major reason is that I previously relied on my work MacBook for development. After changing jobs, I no longer have access to a Mac device that I can use for personal development work, which means I’m currently unable to build, test, or release updates for the app.
+>
+> Because of that, issue responses, feature work, PR reviews, and new releases are effectively on hold indefinitely for now.
+>
+> The project is not abandoned entirely, and I’d still like to return to it someday if circumstances change. For now though, I want to be transparent that active development is no longer possible on my end.
+>
+> Thank you to everyone who has used the app, reported issues, submitted ideas, or contributed. I genuinely appreciate all of the support the project has received.
+
+
 <p align="center">
   <img src="https://github.com/alienator88/Viz/assets/6263626/46db3bc2-e5ac-48e6-af45-4affe6aeb55c" width="128" height="128" />
    <br />
-   <strong>Status: </strong>Maintained 
+   <strong>Status: </strong>On Hold 
    <br />
    <strong>Version: </strong>2.3.3
    <br />
