@@ -122,10 +122,8 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
             Spacer()
             VStack(alignment: .center, spacing: 10) {
                 Image(systemName: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: size)
-                    .foregroundColor(color)
+                    .font(.system(size: size))
+                    .foregroundStyle(color ?? .primary)
                 configuration.label
                     .font(.footnote)
 
